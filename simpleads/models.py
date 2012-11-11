@@ -15,8 +15,6 @@ from simpleads.helpers import last_hour, getIP
 from simpleads.managers import ActiveJobsManager, TempJobsManager
 from simpleads.conf import settings as simpleads_settings
 
-from dynamicsites.fields import FolderNameField, SubdomainListField
-
 import datetime
 import uuid
 import time
@@ -25,23 +23,6 @@ try:
     from hashlib import md5
 except ImportError:
     from md5 import md5
-
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([
-    (
-        [FolderNameField],
-        [],
-        {},
-    ),
-], ["^dynamicsites.fields.FolderNameField"])
-
-add_introspection_rules([
-    (
-        [SubdomainListField],
-        [],
-        {},
-    ),
-], ["^dynamicsites.fields.SubdomainListField"])
 
 
 class SiteModel(models.Model):
