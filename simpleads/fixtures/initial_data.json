@@ -1,107 +1,175 @@
 [
-  {
-    "model": "simpleads.category",
-    "pk": 1,
-    "fields": {
-      "name": "Programming",
-      "var_name": "programming",
-      "category_order": 0
+    {
+        "pk": 1,
+        "model": "simpleads.category",
+        "fields": {
+            "category_order": 0,
+            "description": "",
+            "title": "",
+            "site": null,
+            "var_name": "programming",
+            "keywords": "",
+            "name": "Programming"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "simpleads.category",
+        "fields": {
+            "category_order": 1,
+            "description": "",
+            "title": "",
+            "site": null,
+            "var_name": "marketing",
+            "keywords": "",
+            "name": "Marketing"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "simpleads.category",
+        "fields": {
+            "category_order": 2,
+            "description": "",
+            "title": "",
+            "site": null,
+            "var_name": "design",
+            "keywords": "",
+            "name": "Design"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "simpleads.type",
+        "fields": {
+            "var_name": "fulltime",
+            "site": null,
+            "name": "Full time"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "simpleads.type",
+        "fields": {
+            "var_name": "parttime",
+            "site": null,
+            "name": "Part time"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "simpleads.type",
+        "fields": {
+            "var_name": "freelance",
+            "site": null,
+            "name": "Freelance"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "simpleads.city",
+        "fields": {
+            "ascii_name": "los-angeles",
+            "site": null,
+            "name": "Los Angeles"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "simpleads.city",
+        "fields": {
+            "ascii_name": "mumbai",
+            "site": null,
+            "name": "Mumbai"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "simpleads.city",
+        "fields": {
+            "ascii_name": "london",
+            "site": null,
+            "name": "London"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "simpleads.job",
+        "fields": {
+            "status": 2,
+            "category": 1,
+            "description": "Lorem ipsum.",
+            "description_html": "",
+            "title": "Web developer",
+            "url": "",
+            "company": "Tyrell",
+            "outside_location": "",
+            "auth": "",
+            "company_slug": "",
+            "sites": [
+                1
+            ],
+            "created_on": "2012-11-13T05:54:29.572Z",
+            "joburl": "web-developer-at-tyrell",
+            "city": 3,
+            "apply_online": true,
+            "owner": null,
+            "poster_email": "poster@email.com",
+            "spotlight": false,
+            "jobtype": 2,
+            "views_count": 0
+        }
+    },
+    {
+        "pk": 2,
+        "model": "simpleads.job",
+        "fields": {
+            "status": 2,
+            "category": 3,
+            "description": "Lorem ipsum.",
+            "description_html": "",
+            "title": "Designer",
+            "url": "",
+            "company": "Tyrell",
+            "outside_location": "",
+            "auth": "",
+            "company_slug": "",
+            "sites": [
+                1
+            ],
+            "created_on": "2012-11-13T05:54:29.572Z",
+            "joburl": "designer-at-tyrell",
+            "city": 2,
+            "apply_online": true,
+            "owner": null,
+            "poster_email": "poster@email.com",
+            "spotlight": false,
+            "jobtype": 3,
+            "views_count": 0
+        }
+    },
+    {
+        "pk": 1,
+        "model": "simpleads.jobstat",
+        "fields": {
+            "description": "Visit for [1]Web developer from IP: 127.0.0.1",
+            "ip": "127.0.0.1",
+            "site": null,
+            "job": 1,
+            "created_on": "2012-11-13T04:47:26.509Z",
+            "stat_type": "H"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "simpleads.jobstat",
+        "fields": {
+            "description": "Visit for [2]Designer from IP: 127.0.0.1",
+            "ip": "127.0.0.1",
+            "site": null,
+            "job": 2,
+            "created_on": "2012-11-13T04:47:26.509Z",
+            "stat_type": "H"
+        }
     }
-  },
-  {
-    "model": "simpleads.category",
-    "pk": 2,
-    "fields": {
-      "name": "Marketing",
-      "var_name": "marketing",
-      "category_order": 1
-    }
-  },
-  {
-    "model": "simpleads.category",
-    "pk": 3,
-    "fields": {
-      "name": "Design",
-      "var_name": "design",
-      "category_order": 2
-    }
-  },
-  {
-    "model": "simpleads.type",
-    "pk": 1,
-    "fields": {
-      "name": "Full time",
-      "var_name": "fulltime"
-    }
-  },
-  {
-    "model": "simpleads.type",
-    "pk": 2,
-    "fields": {
-      "name": "Part time",
-      "var_name": "parttime"
-    }
-  },
-  {
-    "model": "simpleads.type",
-    "pk": 3,
-    "fields": {
-      "name": "Freelance",
-      "var_name": "freelance"
-    }
-  },  
-  {
-    "model": "simpleads.city",
-    "pk": 1,
-    "fields": {
-      "name": "Los Angeles",
-      "ascii_name": "los-angeles"
-    }
-  },
-  {
-    "model": "simpleads.city",
-    "pk": 2,
-    "fields": {
-      "name": "Mumbai",
-      "ascii_name": "mumbai"
-    }
-  },
-  {
-    "model": "simpleads.city",
-    "pk": 3,
-    "fields": {
-      "name": "London",
-      "ascii_name": "london"
-    }
-  },
-  {
-    "model": "simpleads.job",
-    "pk": 1,
-    "fields": {
-      "category": 1,
-      "jobtype": 2,
-      "title": "Web developer",
-      "description": "Lorem ipsum.",
-      "company": "Tyrell",
-      "joburl": "web-developer-at-tyrell",
-      "city": 3,
-      "status": 2,
-      "poster_email": "poster@email.com"
-    }
-  },
-  {
-    "model": "simpleads.job",
-    "pk": 2,
-    "fields": {
-      "category": 3,
-      "jobtype": 3,
-      "title": "Designer",
-      "description": "Lorem ipsum.",
-      "company": "Tyrell",
-      "joburl": "designer-at-tyrell",
-      "city": 2,
-      "status": 2,
-      "poster_email": "poster@email.com"
-    }
-  }  
 ]
