@@ -75,7 +75,7 @@ urlpatterns += patterns('',
     url(r'^' + simpleads_settings.SIMPLEADS_JOB_URL +
         '/(?P<job_id>\d+)/(?P<joburl>[-\w]+)/$',
         'simpleads.views.job_detail',
-        name='simpleads_job_detail'),
+        name='simpleads_ad_detail'),
 
     #Jobs in city view
     url(r'^' + simpleads_settings.SIMPLEADS_JOBS_IN_URL +
@@ -115,19 +115,19 @@ urlpatterns += patterns('',
     url(r'^' + simpleads_settings.SIMPLEADS_POST_URL +
         '/(?P<job_id>\d+)/(?P<auth>[-\w]+)/$',
         'simpleads.views.job_edit',
-        name='simpleads_job_edit'),
+        name='simpleads_ad_edit'),
 
     #Activate job
     url(r'^' + simpleads_settings.SIMPLEADS_ACTIVATE_URL +
         '/(?P<job_id>\d+)/(?P<auth>[-\w]+)/$',
         'simpleads.views.job_activate',
-        name='simpleads_job_activate'),
+        name='simpleads_ad_activate'),
 
     #Deactivate job
     url(r'^' + simpleads_settings.SIMPLEADS_DEACTIVATE_URL +
         '/(?P<job_id>\d+)/(?P<auth>[-\w]+)/$',
         'simpleads.views.job_deactivate',
-        name='simpleads_job_deactivate'),
+        name='simpleads_ad_deactivate'),
 
     #Search
     url(r'^' + simpleads_settings.SIMPLEADS_SEARCH_URL + '/$',
