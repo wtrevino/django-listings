@@ -5,8 +5,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
 from django.contrib.sites.models import Site
-from simpleads.helpers import getIP, handle_uploaded_file, delete_uploaded_file
-from simpleads.conf import settings as simpleads_settings
+from listings.helpers import getIP, handle_uploaded_file, delete_uploaded_file
+from listings.conf import settings as listings_settings
 from time import time
 import threading
 
@@ -16,8 +16,8 @@ class MailPublishToAdmin(threading.Thread):
 
     def __init__(self, job, request):
         threading.Thread.__init__(self)
-        plaintext = get_template('simpleads/emails/publish_to_admin.txt')
-        html = get_template('simpleads/emails/publish_to_admin.html')
+        plaintext = get_template('listings/emails/publish_to_admin.txt')
+        html = get_template('listings/emails/publish_to_admin.html')
         template_vars = {}
         template_vars['job_url'] = 'http://%s%s' % (site_domain, job.get_absolute_url())
         template_vars['job_title'] = job.title
@@ -25,12 +25,12 @@ class MailPublishToAdmin(threading.Thread):
         template_vars['job_description'] = job.description
         template_vars['job_poster_email'] = job.poster_email
         job_info = {
-                    'site_name': simpleads_settings.SIMPLEADS_SITE_NAME,
+                    'site_name': listings_settings.LISTINGS_SITE_NAME,
                     'job_title': job.title,
         }
-        subject = simpleads_settings.SIMPLEADS_EDIT_POST_ADMIN_SUBJECT % job_info
+        subject = listings_settings.LISTINGS_EDIT_POST_ADMIN_SUBJECT % job_info
         if not job.is_active():
-            subject = simpleads_settings.SIMPLEADS_NEW_POST_ADMIN_SUBJECT % job_info
+            subject = listings_settings.LISTINGS_NEW_POST_ADMIN_SUBJECT % job_info
             template_vars['job_activate_url'] = 'http://%s%s' % (site_domain, job.get_activation_url())
         template_vars['job_edit_url'] = 'http://%s%s' % (site_domain, job.get_edit_url())
         template_vars['job_deactivate_url'] = 'http://%s%s' % (site_domain, job.get_deactivation_url())
@@ -38,8 +38,8 @@ class MailPublishToAdmin(threading.Thread):
         template_vars['job_post_date'] = job.created_on
         d = Context(template_vars)
 
-        from_email = simpleads_settings.SIMPLEADS_ADMIN_EMAIL
-        to = simpleads_settings.SIMPLEADS_ADMIN_EMAIL
+        from_email = listings_settings.LISTINGS_ADMIN_EMAIL
+        to = listings_settings.LISTINGS_ADMIN_EMAIL
         text_content = plaintext.render(d)
         html_content = html.render(d)
         self.email = EmailMultiAlternatives(subject, text_content, from_email, [to])
@@ -52,8 +52,8 @@ class MailPublishPendingToUser(threading.Thread):
 
     def __init__(self, job, request):
         threading.Thread.__init__(self)
-        plaintext = get_template('simpleads/emails/publish_pending_to_user.txt')
-        html = get_template('simpleads/emails/publish_pending_to_user.html')
+        plaintext = get_template('listings/emails/publish_pending_to_user.txt')
+        html = get_template('listings/emails/publish_pending_to_user.html')
         template_vars = {}
         template_vars['job_url'] = 'http://%s%s' % (site_domain, job.get_absolute_url())
         template_vars['job_title'] = job.title
@@ -63,11 +63,11 @@ class MailPublishPendingToUser(threading.Thread):
         template_vars['job_post_date'] = job.created_on
         d = Context(template_vars)
         job_info = {
-                    'site_name': simpleads_settings.SIMPLEADS_SITE_NAME,
+                    'site_name': listings_settings.LISTINGS_SITE_NAME,
                     'job_title': job.title,
         }
-        subject = simpleads_settings.SIMPLEADS_MAIL_PENDING_SUBJECT %  job_info
-        from_email = simpleads_settings.SIMPLEADS_ADMIN_EMAIL
+        subject = listings_settings.LISTINGS_MAIL_PENDING_SUBJECT %  job_info
+        from_email = listings_settings.LISTINGS_ADMIN_EMAIL
         to = job.poster_email
         text_content = plaintext.render(d)
         html_content = html.render(d)
@@ -81,20 +81,20 @@ class MailPublishToUser(threading.Thread):
 
     def __init__(self, job, request):
         threading.Thread.__init__(self)
-        plaintext = get_template('simpleads/emails/publish_to_user.txt')
-        html = get_template('simpleads/emails/publish_to_user.html')
+        plaintext = get_template('listings/emails/publish_to_user.txt')
+        html = get_template('listings/emails/publish_to_user.html')
         template_vars = {}
         template_vars['job_url'] = 'http://%s%s' % (site_domain, job.get_absolute_url())
         template_vars['job_edit_url'] = 'http://%s%s' % (site_domain, job.get_edit_url())
         template_vars['job_deactivate_url'] = 'http://%s%s' % (site_domain, job.get_deactivation_url())
-        template_vars['site_name'] = simpleads_settings.SIMPLEADS_SITE_NAME
+        template_vars['site_name'] = listings_settings.LISTINGS_SITE_NAME
         d = Context(template_vars)
         job_info = {
-                    'site_name': simpleads_settings.SIMPLEADS_SITE_NAME,
+                    'site_name': listings_settings.LISTINGS_SITE_NAME,
                     'job_title': job.title,
         }
-        subject = simpleads_settings.SIMPLEADS_MAIL_PUBLISH_SUBJECT % job_info 
-        from_email = simpleads_settings.SIMPLEADS_ADMIN_EMAIL
+        subject = listings_settings.LISTINGS_MAIL_PUBLISH_SUBJECT % job_info 
+        from_email = listings_settings.LISTINGS_ADMIN_EMAIL
         to = job.poster_email
         text_content = plaintext.render(d)
         html_content = html.render(d)
@@ -109,19 +109,19 @@ class MailApplyOnline(threading.Thread):
     def __init__(self, job, request):
         threading.Thread.__init__(self)
         job_info = {
-                    'site_name': simpleads_settings.SIMPLEADS_SITE_NAME,
+                    'site_name': listings_settings.LISTINGS_SITE_NAME,
                     'job_title': job.title,
         }
-        subject = simpleads_settings.SIMPLEADS_MAIL_APPLY_ONLINE_SUBJECT % job_info
-        from_email = simpleads_settings.SIMPLEADS_ADMIN_EMAIL
+        subject = listings_settings.LISTINGS_MAIL_APPLY_ONLINE_SUBJECT % job_info
+        from_email = listings_settings.LISTINGS_ADMIN_EMAIL
         to = job.poster_email
         msg = request.POST['apply_msg']
         self.email = EmailMessage(subject, msg, from_email, [to], headers = {'Reply-To': request.POST['apply_email']})
         if 'apply_cv' in request.FILES.keys():
             name = unicode(int(time()))+'_'+request.FILES['apply_cv'].name
             handle_uploaded_file(request.FILES['apply_cv'], name)
-            self.email.attach_file(simpleads_settings.SIMPLEADS_FILE_UPLOADS + name)
-            delete_uploaded_file(simpleads_settings.SIMPLEADS_FILE_UPLOADS + name)
+            self.email.attach_file(listings_settings.LISTINGS_FILE_UPLOADS + name)
+            delete_uploaded_file(listings_settings.LISTINGS_FILE_UPLOADS + name)
 
     def run(self):
         self.email.send()

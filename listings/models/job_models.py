@@ -11,10 +11,10 @@ from django.contrib.sites.models import Site
 from django.contrib.sites.managers import CurrentSiteManager
 from django.conf import settings as django_settings
 
-from simpleads.helpers import last_hour, getIP
-from simpleads.managers import ActiveJobsManager, TempJobsManager
-from simpleads.models.base_models import Posting
-from simpleads.conf import settings as simpleads_settings
+from listings.helpers import last_hour, getIP
+from listings.managers import ActiveJobsManager, TempJobsManager
+from listings.models.base_models import Posting
+from listings.conf import settings as listings_settings
 
 import datetime
 import uuid
@@ -50,7 +50,7 @@ class Category(SiteModel):
                                                     unique=True, blank=True)
 
     class Meta:
-        app_label = 'simpleads'
+        app_label = 'listings'
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
 
@@ -62,7 +62,7 @@ class Category(SiteModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('simpleads_job_list_category', [self.var_name])
+        return ('listings_job_list_category', [self.var_name])
 
     def save(self, *args, **kwargs):
         if not self.category_order:
@@ -85,7 +85,7 @@ class Type(SiteModel):
     var_name = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
 
     class Meta:
-        app_label = 'simpleads'
+        app_label = 'listings'
         verbose_name = _('Type')
         verbose_name_plural = _('Types')
 
@@ -107,7 +107,7 @@ class City(SiteModel):
     ascii_name = models.SlugField(_('ASCII Name'), unique=True, max_length=50, blank=False)
 
     class Meta:
-        app_label = 'simpleads'
+        app_label = 'listings'
         verbose_name = _('City')
         verbose_name_plural = _('Cities')
 
@@ -146,7 +146,7 @@ class Job(Posting):
                                     help_text=_('If you are unchecking this, then add a description on how to apply online!'))
 
     class Meta:
-        app_label = 'simpleads'
+        app_label = 'listings'
         verbose_name = _('Job')
         verbose_name_plural = _('Jobs')
 
@@ -163,7 +163,7 @@ class Job(Posting):
         ip = getIP(request)
         hits = JobStat.objects.filter(created_on__range=lh,
                                         ip=ip, stat_type='H', job=self).count()
-        if hits < simpleads_settings.SIMPLEADS_MAX_VISITS_PER_HOUR:
+        if hits < listings_settings.LISTINGS_MAX_VISITS_PER_HOUR:
             self.views_count = self.views_count + 1
             self.save()
             new_hit = JobStat(ip=ip, stat_type='H', job=self)
@@ -189,18 +189,18 @@ class Job(Posting):
 
         #saving job url
         self.joburl = slugify(self.title) + \
-                        '-' + simpleads_settings.SIMPLEADS_AT_URL + \
+                        '-' + listings_settings.LISTINGS_AT_URL + \
                         '-' + slugify(self.company)
 
         #saving with textile
-        if simpleads_settings.SIMPLEADS_MARKUP_LANGUAGE == 'textile':
+        if listings_settings.LISTINGS_MARKUP_LANGUAGE == 'textile':
             import textile
             self.description_html = mark_safe(
                                         force_unicode(
                                             textile.textile(
                                                 smart_str(self.description))))
         #or markdown
-        elif simpleads_settings.SIMPLEADS_MARKUP_LANGUAGE == 'markdown':
+        elif listings_settings.LISTINGS_MARKUP_LANGUAGE == 'markdown':
             import markdown
             self.description_html = mark_safe(
                                         force_unicode(
@@ -234,7 +234,7 @@ class JobStat(SiteModel):
     description = models.CharField(_('Description'), max_length=250)
 
     class Meta:
-        app_label = 'simpleads'
+        app_label = 'listings'
         verbose_name = _('Job Stat')
         verbose_name_plural = _('Job Stats')
 
@@ -261,7 +261,7 @@ class JobSearch(models.Model):
     created_on = models.DateTimeField(_('Created on'), default=datetime.datetime.now())
 
     class Meta:
-        app_label = 'simpleads'
+        app_label = 'listings'
         verbose_name = _('Search')
         verbose_name_plural = _('Searches')
 

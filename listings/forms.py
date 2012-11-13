@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from simpleads.models import Job, Category, Type, JobStat
+from listings.models import Job, Category, Type, JobStat
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
-from simpleads.conf import settings as simpleads_settings
+from listings.conf import settings as listings_settings
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime, timedelta
 
@@ -47,7 +47,7 @@ class JobForm(forms.ModelForm):
             pass
 
 class CaptchaJobForm(JobForm):
-    if simpleads_settings.SIMPLEADS_CAPTCHA_POST == "simple":
+    if listings_settings.LISTINGS_CAPTCHA_POST == "simple":
         from captcha.fields import CaptchaField
         captcha = CaptchaField()
     else:
@@ -62,7 +62,7 @@ class ApplicationForm(forms.Form):
     apply_msg = forms.CharField(widget=forms.Textarea(attrs={'rows':15, 'cols':60, 'id':'apply_msg'}))
     apply_cv = forms.FileField(required=False)
 
-    if simpleads_settings.SIMPLEADS_CAPTCHA_APPLICATION == "simple":
+    if listings_settings.LISTINGS_CAPTCHA_APPLICATION == "simple":
         from captcha.fields import CaptchaField
         captcha = CaptchaField()     
 
@@ -74,7 +74,7 @@ class ApplicationForm(forms.Form):
         m = previous_applications.count()
         if m > 0:
             #Getting how many minutes until user can apply again
-            d1 = previous_applications.latest('created_on').created_on + timedelta(minutes=simpleads_settings.SIMPLEADS_MINUTES_BETWEEN)
+            d1 = previous_applications.latest('created_on').created_on + timedelta(minutes=listings_settings.LISTINGS_MINUTES_BETWEEN)
             d2 = datetime.now()
             remaining = d1 - d2
             remaining = remaining.seconds / 60
@@ -83,10 +83,10 @@ class ApplicationForm(forms.Form):
         if cleaned_data['apply_cv']:
             #checking if cv extension is permitted
             extension = cleaned_data['apply_cv'].name.lower().split('.')[-1]
-            if extension not in simpleads_settings.SIMPLEADS_CV_EXTENSIONS:
+            if extension not in listings_settings.LISTINGS_CV_EXTENSIONS:
                 raise forms.ValidationError(_('Your resume/CV has an invalid extension.'))
             #checking cv size does not exceed the permitted one
-            permitted_size = simpleads_settings.SIMPLEADS_MAX_UPLOAD_SIZE
+            permitted_size = listings_settings.LISTINGS_MAX_UPLOAD_SIZE
             if cleaned_data['apply_cv']._size > permitted_size:
                 raise forms.ValidationError(_('Your resume/CV must not exceed the file size limit. (%(size)sMB)') % {'size': (permitted_size/1024)/1024})
 

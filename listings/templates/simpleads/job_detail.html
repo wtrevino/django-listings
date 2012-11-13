@@ -1,4 +1,4 @@
-{% extends "simpleads/base.html" %}
+{% extends "listings/base.html" %}
 
 {% block content %}
 
@@ -37,7 +37,7 @@
 			</p> 
 			<div id="job-description">
                 {% if markup_lang %}
-                    {% load simpleads_tags %}
+                    {% load listings_tags %}
                     {{ object.description_html|safe|nofollow }}
                 {% else %}
                     {{object.description|linebreaksbr}}
@@ -155,7 +155,7 @@
             <div id="job-bottom"> 
 				<div id="job-post-utils">
                     {% if object.category %}
-					<a href="{% url simpleads_job_list_category object.category.var_name %}" title="{{ object.category }}">&laquo; Go back to category</a><br />
+					<a href="{% url listings_job_list_category object.category.var_name %}" title="{{ object.category }}">&laquo; Go back to category</a><br />
                     {% endif %}
 
                     <!--
@@ -199,16 +199,16 @@
 
 {% if page_type == 'verify' %}    
 
-        <form action="{% url simpleads_job_confirm object.id object.auth %}" method="post" id="publish_form" name="publish_form">
+        <form action="{% url listings_job_confirm object.id object.auth %}" method="post" id="publish_form" name="publish_form">
         {% csrf_token %}
 			<fieldset>
 				<div class="right">
 					<div class="suggestion">If you changed your mind, you may
-					<a title="cancel posting this ad" href="{%url simpleads_ad_deactivate object.id object.auth %}">cancel posting this ad</a></div>
+					<a title="cancel posting this ad" href="{%url listings_ad_deactivate object.id object.auth %}">cancel posting this ad</a></div>
 				</div>
 									<input type="submit" value="Publish this ad" id="submit" name="submit">
 									&nbsp;or&nbsp;
-				<a title="Edit it" href="{% url simpleads_ad_edit object.id object.auth %}">Edit it</a>
+				<a title="Edit it" href="{% url listings_ad_edit object.id object.auth %}">Edit it</a>
 			</fieldset>
 		</form>
 

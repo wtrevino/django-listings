@@ -1,10 +1,10 @@
-{% extends "simpleads/base.html" %}
+{% extends "listings/base.html" %}
 
 {% block content %}
 
 {% if page_type == 'index' %}
 
-    {% load simpleads_tags %}
+    {% load listings_tags %}
     {% get_spotlight_jobs 5 as spotlight_jobs %}
 
         <div id="job-listings"></div> 
@@ -14,7 +14,7 @@
 			    <div class="row-spot"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
-				    <a href="{% url simpleads_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
+				    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
                          {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}
@@ -32,7 +32,7 @@
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
-                    <a href="{% url simpleads_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
+                    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
                         {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}
@@ -45,7 +45,7 @@
 
             {% if latest_jobs.count > 0 %}
             <div id="view_all">
-		        <a href="{% url simpleads_job_list_all %}">View all »</a>
+		        <a href="{% url listings_job_list_all %}">View all »</a>
         	</div>
             {% endif %}
 
@@ -59,7 +59,7 @@
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
-                    <a href="{% url simpleads_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
+                    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
                         {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}
@@ -79,7 +79,7 @@
             Only display&nbsp;  
             {% get_jobtypes %}
             {% for jobtype in jobtypes %}
-                <a href="{% url simpleads_job_list_category_type selected_category.var_name jobtype.var_name %}" title="{{jobtype}}">
+                <a href="{% url listings_job_list_category_type selected_category.var_name jobtype.var_name %}" title="{{jobtype}}">
                     <img src="{{STATIC_URL}}img/icon-{{jobtype.var_name}}.png" alt="{{jobtype}}">
                 </a>
             {% endfor %}
@@ -96,7 +96,7 @@
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
-                    <a href="{% url simpleads_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
+                    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
                         {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}

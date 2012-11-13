@@ -35,7 +35,7 @@ class Posting(models.Model):
 
     class Meta:
         abstract = True
-        app_label = 'simpleads'
+        app_label = 'listings'
 
     owner = models.ForeignKey(User, blank=True, null=True)
     title = models.CharField(verbose_name=_('Title'), max_length=100, blank=False)
@@ -119,16 +119,16 @@ class Posting(models.Model):
 
     @models.permalink
     def get_edit_url(self):
-        return ('simpleads_ad_edit', [self.id, self.auth])
+        return ('listings_ad_edit', [self.id, self.auth])
 
     @models.permalink
     def get_absolute_url(self):
-        return ('simpleads_ad_detail', [self.id, self.joburl])
+        return ('listings_ad_detail', [self.id, self.joburl])
 
     @models.permalink
     def get_activation_url(self):
-        return ('simpleads_ad_activate', [self.id, self.auth])
+        return ('listings_ad_activate', [self.id, self.auth])
 
     @models.permalink
     def get_deactivation_url(self):
-        return ('simpleads_ad_deactivate', [self.id, self.auth])
+        return ('listings_ad_deactivate', [self.id, self.auth])

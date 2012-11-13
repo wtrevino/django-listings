@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from simpleads.models import Job, Type, Category, City
-from simpleads.conf import settings
+from listings.models import Job, Type, Category, City
+from listings.conf import settings
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
@@ -87,9 +87,9 @@ class JobTestCase(unittest.TestCase):
 
         # Test job slugs
         self.assertEqual(self.job_1.joburl, 
-          'genetist-needed-'+settings.SIMPLEADS_AT_URL+'-tyrell-corporation')
+          'genetist-needed-'+settings.LISTINGS_AT_URL+'-tyrell-corporation')
         self.assertEqual(self.job_2.joburl, 
-             'wanted-eye-designer-'+settings.SIMPLEADS_AT_URL+'-tyrell-corp')
+             'wanted-eye-designer-'+settings.LISTINGS_AT_URL+'-tyrell-corp')
 
         # Test company slugs
         self.assertEqual(self.job_1.company_slug, 'tyrell-corporation')
@@ -131,7 +131,7 @@ class JobTestCase(unittest.TestCase):
         self.assertEqual(self.job_2.email_published_before(), True)
 
     def testIndexView(self):
-        response = self.client.get(reverse('simpleads_job_list'))
+        response = self.client.get(reverse('listings_job_list'))
         # Check that the response is 200 OK
         self.failUnlessEqual(response.status_code, 200)
         # Assert that number of categories is correct

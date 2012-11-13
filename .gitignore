@@ -3,6 +3,6 @@
 bin
 dist
 MANIFEST
-simpleads.sublime-project
-simpleads.sublime-workspace
-simpleads/migrations/
+listings.sublime-project
+listings.sublime-workspace
+listings/migrations/

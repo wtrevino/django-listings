@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import get_object_or_404, redirect, render_to_response
-from simpleads.models import Job, Category, Type, JobStat, JobSearch, City
-from simpleads.postman import *
+from listings.models import Job, Category, Type, JobStat, JobSearch, City
+from listings.postman import *
 from django.views.generic.list_detail import object_detail, object_list
 from django.views.generic.create_update import update_object
 from django.core.context_processors import csrf
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.template import RequestContext
-from simpleads.helpers import *
-from simpleads.forms import ApplicationForm, JobForm
-from simpleads.conf import settings as simpleads_settings
+from listings.helpers import *
+from listings.forms import ApplicationForm, JobForm
+from listings.conf import settings as listings_settings
 from django.db.models import Count
 from django.http import Http404
 
@@ -24,8 +24,8 @@ def job_detail(request, job_id, joburl):
     try:
         job = Job.active.get(pk=job_id, joburl=joburl)
         extra_context = {'page_type': 'detail',
-               'cv_extensions': simpleads_settings.SIMPLEADS_CV_EXTENSIONS,
-               'markup_lang': simpleads_settings.SIMPLEADS_MARKUP_LANGUAGE}
+               'cv_extensions': listings_settings.LISTINGS_CV_EXTENSIONS,
+               'markup_lang': listings_settings.LISTINGS_MARKUP_LANGUAGE}
 
         # Increment views
         job.increment_view_count(request)
@@ -36,8 +36,8 @@ def job_detail(request, job_id, joburl):
         # Only if the job has online applications ON and application
         # notifications are activated can the user apply online
         mb = minutes_between()
-        if job.apply_online and simpleads_settings.\
-            SIMPLEADS_APPLICATION_NOTIFICATIONS:
+        if job.apply_online and listings_settings.\
+            LISTINGS_APPLICATION_NOTIFICATIONS:
 
             # Add CSRF protection
             extra_context.update(csrf(request))
@@ -74,7 +74,7 @@ def job_detail(request, job_id, joburl):
                 form = ApplicationForm(applicant_data={'ip': ip, 'mb': mb})
             extra_context['apform'] = form
             extra_context['object'] = job
-            return render_to_response('simpleads/job_detail.html',
+            return render_to_response('listings/job_detail.html',
                                        extra_context,
                                        context_instance=RequestContext(request))
 
@@ -87,7 +87,7 @@ def job_detail(request, job_id, joburl):
 
     # Instead of throwing a 404 error redirect to job unavailable page
     except Job.DoesNotExist:
-        return redirect('simpleads_job_unavailable', permanent=True)
+        return redirect('listings_job_unavailable', permanent=True)
 
 
 def job_verify(request, job_id, auth):
@@ -97,7 +97,7 @@ def job_verify(request, job_id, auth):
     # Setting page_type as 'verify' in order to
     # show edit and cancelation buttons in the template
     extra_context = {'page_type': 'verify',
-               'markup_lang': simpleads_settings.SIMPLEADS_MARKUP_LANGUAGE}
+               'markup_lang': listings_settings.LISTINGS_MARKUP_LANGUAGE}
     return object_detail(request, queryset=queryset,
                             object_id=job_id, extra_context=extra_context)
 
@@ -118,7 +118,7 @@ def jobs_category(request, cvar_name=None, tvar_name=None):
         extra_context['selected_jobtype'] = jobtype
     return object_list(request, queryset=queryset,
                     extra_context=extra_context,
-                    paginate_by=simpleads_settings.SIMPLEADS_JOBS_PER_PAGE)
+                    paginate_by=listings_settings.LISTINGS_JOBS_PER_PAGE)
 
 
 def jobs_in_city(request, city_name, tvar_name=None):
@@ -133,7 +133,7 @@ def jobs_in_city(request, city_name, tvar_name=None):
         extra_context['selected_jobtype'] = jobtype
     return object_list(request, queryset=queryset,
                     extra_context=extra_context,
-                    paginate_by=simpleads_settings.SIMPLEADS_JOBS_PER_PAGE)
+                    paginate_by=listings_settings.LISTINGS_JOBS_PER_PAGE)
 
 
 def jobs_in_other_cities(request):
@@ -150,7 +150,7 @@ def companies(request):
     queryset = Job.active.values('company', 'company_slug') \
                .annotate(Count('company'))
     return object_list(request, queryset=queryset,
-                                template_name='simpleads/company_list.html')
+                                template_name='listings/company_list.html')
 
 
 def jobs_at(request, company_slug, tvar_name=None):
@@ -174,12 +174,12 @@ def job_confirm(request, job_id, auth):
         raise Http404
     new_post = job.is_temporary()
     requires_mod = not job.email_published_before() and \
-                 simpleads_settings.SIMPLEADS_ENABLE_NEW_POST_MODERATION
+                 listings_settings.LISTINGS_ENABLE_NEW_POST_MODERATION
     if requires_mod:
         messages.add_message(request,
                        messages.INFO,
                        _('Your job post needs to be verified by a moderator.'))
-        if simpleads_settings.SIMPLEADS_POSTER_NOTIFICATIONS:
+        if listings_settings.LISTINGS_POSTER_NOTIFICATIONS:
             pending_email = MailPublishPendingToUser(job, request)
             pending_email.start()
     else:
@@ -189,11 +189,11 @@ def job_confirm(request, job_id, auth):
         if not job.is_active():
             job.activate()
         if new_post:
-            if simpleads_settings.SIMPLEADS_POSTER_NOTIFICATIONS:
+            if listings_settings.LISTINGS_POSTER_NOTIFICATIONS:
                 publish_email = MailPublishToUser(job, request)
                 publish_email.start()
     queryset = Job.objects.all()
-    if simpleads_settings.SIMPLEADS_ADMIN_NOTIFICATIONS:
+    if listings_settings.LISTINGS_ADMIN_NOTIFICATIONS:
         admin_email = MailPublishToAdmin(job, request)
         admin_email.start()
     return object_detail(request, queryset=queryset,
@@ -209,7 +209,7 @@ def job_edit(request, job_id, auth):
         raise Http404
     return update_object(request, form_class=JobForm, object_id=job_id,
            post_save_redirect='../../../' +
-           simpleads_settings.SIMPLEADS_VERIFY_URL + '/%(id)d/%(auth)s/')
+           listings_settings.LISTINGS_VERIFY_URL + '/%(id)d/%(auth)s/')
 
 
 def job_activate(request, job_id, auth):
@@ -220,7 +220,7 @@ def job_activate(request, job_id, auth):
     extra_context = {}
     if not job.is_active():
         job.activate()
-        if simpleads_settings.SIMPLEADS_POSTER_NOTIFICATIONS:
+        if listings_settings.LISTINGS_POSTER_NOTIFICATIONS:
             publish_email = MailPublishToUser(job, request)
             publish_email.start()
         messages.add_message(request,
@@ -246,7 +246,7 @@ def job_deactivate(request, job_id, auth):
     queryset = Job.active.all()
     return object_list(request, queryset=queryset,
                     extra_context=extra_context,
-                    paginate_by=simpleads_settings.SIMPLEADS_JOBS_PER_PAGE)
+                    paginate_by=listings_settings.LISTINGS_JOBS_PER_PAGE)
 
 
 def job_search(request):
@@ -263,11 +263,11 @@ def job_search(request):
         search_fields = ['title', 'description', 'category',
                              'jobtype', 'city', 'outside_location', 'company', ]
         entry_query = get_query(query_string, search_fields)
-        jobs_per_search = simpleads_settings.SIMPLEADS_JOBS_PER_SEARCH
+        jobs_per_search = listings_settings.LISTINGS_JOBS_PER_SEARCH
         found_entries = Job.objects.filter(entry_query)\
                                      .order_by('-created_on')[:jobs_per_search]
         search = JobSearch(keywords=query_string)
         search.save()
     return object_list(request, queryset=found_entries,
                     extra_context=extra_context,
-                    paginate_by=simpleads_settings.SIMPLEADS_JOBS_PER_PAGE)
+                    paginate_by=listings_settings.LISTINGS_JOBS_PER_PAGE)

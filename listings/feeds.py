@@ -5,8 +5,8 @@ from django.utils.feedgenerator import Rss201rev2Feed
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from simpleads.models import Category, Job
-from simpleads.conf.settings import SIMPLEADS_SITE_NAME
+from listings.models import Category, Job
+from listings.conf.settings import LISTINGS_SITE_NAME
 
 class LatestJobsFeed(Feed):
 
@@ -17,14 +17,14 @@ class LatestJobsFeed(Feed):
             return get_object_or_404(Category, var_name=var_name)
 
     def title(self, obj=None):
-        t = _(' %(site_name)s RSS Job feed') % {'site_name' : SIMPLEADS_SITE_NAME}
+        t = _(' %(site_name)s RSS Job feed') % {'site_name' : LISTINGS_SITE_NAME}
         if obj:
             t += _(': %(category)s jobs') % {'site_name' : obj}
         return t
 
     def link(self, obj=None):
         if not obj:
-            return reverse('simpleads_job_list_all')
+            return reverse('listings_job_list_all')
         else:
             return obj.get_absolute_url()
 

@@ -6,7 +6,7 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.db.models import Q
 from datetime import datetime, timedelta
-from simpleads.conf import settings as simpleads_settings
+from listings.conf import settings as listings_settings
 
 def normalize_query(query_string,
                     findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
@@ -46,7 +46,7 @@ def get_query(query_string, search_fields):
     return query
 
 def handle_uploaded_file(f, name):
-    file_uploads = simpleads_settings.SIMPLEADS_FILE_UPLOADS
+    file_uploads = listings_settings.LISTINGS_FILE_UPLOADS
     destination = open(file_uploads + name, 'wb+')
     for chunk in f.chunks():
         destination.write(chunk)
@@ -56,7 +56,7 @@ def delete_uploaded_file(name):
     os.remove(name)
 
 def minutes_between():
-    minutes = simpleads_settings.SIMPLEADS_MINUTES_BETWEEN
+    minutes = listings_settings.LISTINGS_MINUTES_BETWEEN
     start = datetime.now() - timedelta(minutes=minutes)
     end = datetime.now()
     return (start, end)
