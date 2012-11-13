@@ -46,4 +46,4 @@ def paginator(context, adjacent_pages=2):
         'show_last': context['pages'] not in page_numbers,
     }
 
-register.inclusion_tag('simpleads/paginator.html', takes_context=True)(paginator)
+register.inclusion_tag('listings/paginator.html', takes_context=True)(paginator)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from simpleads.models import Category, Type, Job, City, JobStat, JobSearch
+from listings.models import Category, Type, Job, City, JobStat, JobSearch
 
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _

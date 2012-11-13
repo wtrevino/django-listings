@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import template
-from simpleads.models import Job, Category, Type, JobStat
+from listings.models import Job, Category, Type, JobStat
 from django.utils.safestring import mark_safe
 from django.db.models import Count
 import re

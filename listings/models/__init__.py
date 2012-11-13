@@ -1,1 +1,1 @@
-from simpleads.models.job_models import *
+from listings.models.job_models import *

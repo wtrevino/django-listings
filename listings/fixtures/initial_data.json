@@ -1,7 +1,7 @@
 [
     {
         "pk": 1,
-        "model": "simpleads.category",
+        "model": "listings.category",
         "fields": {
             "category_order": 0,
             "description": "",
@@ -14,7 +14,7 @@
     },
     {
         "pk": 2,
-        "model": "simpleads.category",
+        "model": "listings.category",
         "fields": {
             "category_order": 1,
             "description": "",
@@ -27,7 +27,7 @@
     },
     {
         "pk": 3,
-        "model": "simpleads.category",
+        "model": "listings.category",
         "fields": {
             "category_order": 2,
             "description": "",
@@ -40,7 +40,7 @@
     },
     {
         "pk": 1,
-        "model": "simpleads.type",
+        "model": "listings.type",
         "fields": {
             "var_name": "fulltime",
             "site": null,
@@ -49,7 +49,7 @@
     },
     {
         "pk": 2,
-        "model": "simpleads.type",
+        "model": "listings.type",
         "fields": {
             "var_name": "parttime",
             "site": null,
@@ -58,7 +58,7 @@
     },
     {
         "pk": 3,
-        "model": "simpleads.type",
+        "model": "listings.type",
         "fields": {
             "var_name": "freelance",
             "site": null,
@@ -67,7 +67,7 @@
     },
     {
         "pk": 1,
-        "model": "simpleads.city",
+        "model": "listings.city",
         "fields": {
             "ascii_name": "los-angeles",
             "site": null,
@@ -76,7 +76,7 @@
     },
     {
         "pk": 2,
-        "model": "simpleads.city",
+        "model": "listings.city",
         "fields": {
             "ascii_name": "mumbai",
             "site": null,
@@ -85,7 +85,7 @@
     },
     {
         "pk": 3,
-        "model": "simpleads.city",
+        "model": "listings.city",
         "fields": {
             "ascii_name": "london",
             "site": null,
@@ -94,7 +94,7 @@
     },
     {
         "pk": 1,
-        "model": "simpleads.job",
+        "model": "listings.job",
         "fields": {
             "status": 2,
             "category": 1,
@@ -122,7 +122,7 @@
     },
     {
         "pk": 2,
-        "model": "simpleads.job",
+        "model": "listings.job",
         "fields": {
             "status": 2,
             "category": 3,
@@ -150,7 +150,7 @@
     },
     {
         "pk": 1,
-        "model": "simpleads.jobstat",
+        "model": "listings.jobstat",
         "fields": {
             "description": "Visit for [1]Web developer from IP: 127.0.0.1",
             "ip": "127.0.0.1",
@@ -162,7 +162,7 @@
     },
     {
         "pk": 2,
-        "model": "simpleads.jobstat",
+        "model": "listings.jobstat",
         "fields": {
             "description": "Visit for [2]Designer from IP: 127.0.0.1",
             "ip": "127.0.0.1",
