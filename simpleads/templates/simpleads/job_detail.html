@@ -204,11 +204,11 @@
 			<fieldset>
 				<div class="right">
 					<div class="suggestion">If you changed your mind, you may
-					<a title="cancel posting this ad" href="{%url simpleads_job_deactivate object.id object.auth %}">cancel posting this ad</a></div>
+					<a title="cancel posting this ad" href="{%url simpleads_ad_deactivate object.id object.auth %}">cancel posting this ad</a></div>
 				</div>
 									<input type="submit" value="Publish this ad" id="submit" name="submit">
 									&nbsp;or&nbsp;
-				<a title="Edit it" href="{% url simpleads_job_edit object.id object.auth %}">Edit it</a>
+				<a title="Edit it" href="{% url simpleads_ad_edit object.id object.auth %}">Edit it</a>
 			</fieldset>
 		</form>
 
