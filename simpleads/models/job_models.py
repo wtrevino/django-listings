@@ -49,6 +49,7 @@ class Category(SiteModel):
                                                     unique=True, blank=True)
 
     class Meta:
+        app_label = 'simpleads'
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
 
@@ -83,6 +84,7 @@ class Type(SiteModel):
     var_name = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
 
     class Meta:
+        app_label = 'simpleads'
         verbose_name = _('Type')
         verbose_name_plural = _('Types')
 
@@ -104,6 +106,7 @@ class City(SiteModel):
     ascii_name = models.SlugField(_('ASCII Name'), unique=True, max_length=50, blank=False)
 
     class Meta:
+        app_label = 'simpleads'
         verbose_name = _('City')
         verbose_name_plural = _('Cities')
 
@@ -164,6 +167,7 @@ class Job(models.Model):
     sites = models.ManyToManyField(Site)
 
     class Meta:
+        app_label = 'simpleads'
         verbose_name = _('Job')
         verbose_name_plural = _('Jobs')
 
@@ -324,6 +328,7 @@ class JobStat(SiteModel):
     description = models.CharField(_('Description'), max_length=250)
 
     class Meta:
+        app_label = 'simpleads'
         verbose_name = _('Job Stat')
         verbose_name_plural = _('Job Stats')
 
@@ -350,6 +355,7 @@ class JobSearch(models.Model):
     created_on = models.DateTimeField(_('Created on'), default=datetime.datetime.now())
 
     class Meta:
+        app_label = 'simpleads'
         verbose_name = _('Search')
         verbose_name_plural = _('Searches')
 
