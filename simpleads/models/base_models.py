@@ -7,18 +7,6 @@ from django.contrib.auth.models import User
 from datetime import datetime
 
 
-class TemporaryPostingsManager(CurrentSiteManager):
-    def get_query_set(self):
-        return super(TemporaryPostingsManager, self).get_query_set() \
-                        .filter(status=self.model.TEMPORARY)
-
-
-class ActivePostingsManager(CurrentSiteManager):
-    def get_query_set(self):
-        return super(ActivePostingsManager, self).get_query_set() \
-                        .filter(status=self.model.ACTIVE)
-
-
 POSTING_INACTIVE = 0
 POSTING_TEMPORARY = 1
 POSTING_ACTIVE = 2
@@ -27,6 +15,18 @@ POSTING_STATUS_CHOICES = (
     (POSTING_TEMPORARY, _('Temporary')),
     (POSTING_ACTIVE, _('Active'))
 )
+
+
+class TemporaryPostingsManager(CurrentSiteManager):
+    def get_query_set(self):
+        return super(TemporaryPostingsManager, self).get_query_set() \
+                        .filter(status=POSTING_TEMPORARY)
+
+
+class ActivePostingsManager(CurrentSiteManager):
+    def get_query_set(self):
+        return super(ActivePostingsManager, self).get_query_set() \
+                        .filter(status=POSTING_ACTIVE)
 
 
 class Posting(models.Model):
@@ -70,18 +70,18 @@ class Posting(models.Model):
     get_sites.short_description = 'Sites'
 
     def is_active(self):
-        return self.status == self.ACTIVE
+        return self.status == POSTING_ACTIVE
 
     def is_temporary(self):
-        return self.status == self.TEMPORARY
+        return self.status == POSTING_TEMPORARY
 
     def get_status_with_icon(self):
         from django.conf import settings
 
         image = {
-            self.ACTIVE: 'icon-yes.gif',
-            self.TEMPORARY: 'icon-unknown.gif',
-            self.INACTIVE: 'icon-no.gif',
+            POSTING_ACTIVE: 'icon-yes.gif',
+            POSTING_TEMPORARY: 'icon-unknown.gif',
+            POSTING_INACTIVE: 'icon-no.gif',
         }[self.status]
 
         try:
@@ -100,7 +100,7 @@ class Posting(models.Model):
 
         return icon % {'admin_media': admin_media,
                        'image': image,
-                       'status': unicode(self.JOB_STATUS_CHOICES[self.status][1])}
+                       'status': unicode(POSTING_STATUS_CHOICES[self.status][1])}
     get_status_with_icon.allow_tags = True
     get_status_with_icon.admin_order_field = 'status'
     get_status_with_icon.short_description = 'Status'
@@ -114,5 +114,21 @@ class Posting(models.Model):
         self.save()
 
     def email_published_before(self):
-        return Job.active.exclude(pk=self.id) \
+        return self.active.exclude(pk=self.id) \
                           .filter(poster_email=self.poster_email).count() > 0
+
+    @models.permalink
+    def get_edit_url(self):
+        return ('simpleads_ad_edit', [self.id, self.auth])
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('simpleads_ad_detail', [self.id, self.joburl])
+
+    @models.permalink
+    def get_activation_url(self):
+        return ('simpleads_ad_activate', [self.id, self.auth])
+
+    @models.permalink
+    def get_deactivation_url(self):
+        return ('simpleads_ad_deactivate', [self.id, self.auth])

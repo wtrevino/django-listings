@@ -13,6 +13,7 @@ from django.conf import settings as django_settings
 
 from simpleads.helpers import last_hour, getIP
 from simpleads.managers import ActiveJobsManager, TempJobsManager
+from simpleads.models.base_models import Posting
 from simpleads.conf import settings as simpleads_settings
 
 import datetime
@@ -122,63 +123,32 @@ class City(SiteModel):
         super(City, self).save(*args, **kwargs)
 
 
-class Job(models.Model):
-    ''' The basic job model.
-    '''
-    INACTIVE = 0
-    TEMPORARY = 1
-    ACTIVE = 2
-    JOB_STATUS_CHOICES = (
-        (INACTIVE, _('Inactive')),
-        (TEMPORARY, _('Temporary')),
-        (ACTIVE, _('Active'))
-    )
+class Job(Posting):
     if django_version[:2] > (1, 2):
         category = models.ForeignKey(Category, verbose_name=_('Category'), blank=False, null=True, on_delete=models.SET_NULL)
         jobtype = models.ForeignKey(Type, verbose_name=_('Job Type'), blank=False, null=True, on_delete=models.SET_NULL)
     else:
         category = models.ForeignKey(Category, verbose_name=_('Category'), blank=False, null=False)
         jobtype = models.ForeignKey(Type, verbose_name=_('Job Type'), blank=False, null=False)
-    title = models.CharField(verbose_name=_('Title'), max_length=100, blank=False)
-    description = models.TextField(_('Description'), blank=False)
-    description_html = models.TextField(editable=False)
+
     company = models.CharField(_('Company'), max_length=150, blank=False)
     company_slug = models.SlugField(max_length=150,
                                             blank=False, editable=False)
     city = models.ForeignKey(City, verbose_name=_('City'), null=True, blank=True)
-    outside_location = models.CharField(_('Outside location'), max_length=150, blank=True)
+
     #url of the company
     url = models.URLField(verify_exists=False, max_length=150, blank=True)
-    created_on = models.DateTimeField(_('Created on'), editable=False, \
-                                        default=datetime.datetime.now())
-    status = models.IntegerField(choices=JOB_STATUS_CHOICES, default=TEMPORARY)
-    views_count = models.IntegerField(editable=False, default=0)
-    auth = models.CharField(blank=True, editable=False, max_length=32)
+
     #url of the job post
     joburl = models.CharField(blank=True, editable=False, max_length=32)
-    poster_email = models.EmailField(_('Poster email'), blank=False, help_text=_('Applications will be sent to this address.'))
+
     apply_online = models.BooleanField(default=True, verbose_name=_('Allow online applications.'),
                                     help_text=_('If you are unchecking this, then add a description on how to apply online!'))
-    spotlight = models.BooleanField(_('Spotlight'), default=False)
-    objects = models.Manager()
-    on_site = CurrentSiteManager()
-    active = ActiveJobsManager()
-    temporary = TempJobsManager()
-    sites = models.ManyToManyField(Site)
 
     class Meta:
         app_label = 'simpleads'
         verbose_name = _('Job')
         verbose_name_plural = _('Jobs')
-
-    def __unicode__(self):
-        return self.title
-
-    def get_sites(self):
-        return ', '.join([site.name for site in self.sites.all()])
-    get_sites.allow_tags = True
-    get_sites.admin_order_field = 'sites'
-    get_sites.short_description = 'Sites'
 
     def get_location(self):
         return self.city or self.outside_location
@@ -188,7 +158,7 @@ class Job(models.Model):
     def get_application_count(self):
         return JobStat.objects.filter(job=self, stat_type='A').count()
 
-    def increment_view_count(self, request):
+    def increment_view_count(self, request):  # TODO: Move to Posting
         lh = last_hour()
         ip = getIP(request)
         hits = JobStat.objects.filter(created_on__range=lh,
@@ -198,70 +168,6 @@ class Job(models.Model):
             self.save()
             new_hit = JobStat(ip=ip, stat_type='H', job=self)
             new_hit.save()
-
-    def is_active(self):
-        return self.status == self.ACTIVE
-
-    def is_temporary(self):
-        return self.status == self.TEMPORARY
-
-    def get_status_with_icon(self):
-        from django.conf import settings
-
-        image = {
-            self.ACTIVE: 'icon-yes.gif',
-            self.TEMPORARY: 'icon-unknown.gif',
-            self.INACTIVE: 'icon-no.gif',
-        }[self.status]
-
-        try:
-            # Django 1.2
-            admin_media = settings.ADMIN_MEDIA_PREFIX
-            icon = '<img src="%(admin_media)simg/admin/%(image)s" alt="%(status)s" /> %(status)s'
-
-        except AttributeError:
-            # Django 1.3+
-            admin_media = settings.STATIC_URL
-            icon = '<img src="%(admin_media)sadmin/img/%(image)s" alt="%(status)s" /> %(status)s'
-
-        else:
-            admin_media = ''
-            icon = '%(status)s'
-
-        return icon % {'admin_media': admin_media,
-                       'image': image,
-                       'status': unicode(self.JOB_STATUS_CHOICES[self.status][1])}
-    get_status_with_icon.allow_tags = True
-    get_status_with_icon.admin_order_field = 'status'
-    get_status_with_icon.short_description = 'Status'
-
-    def activate(self):
-        self.status = self.ACTIVE
-        self.save()
-
-    def deactivate(self):
-        self.status = self.INACTIVE
-        self.save()
-
-    def email_published_before(self):
-        return Job.active.exclude(pk=self.id) \
-                          .filter(poster_email=self.poster_email).count() > 0
-
-    @models.permalink
-    def get_edit_url(self):
-        return ('simpleads_job_edit', [self.id, self.auth])
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ('simpleads_job_detail', [self.id, self.joburl])
-
-    @models.permalink
-    def get_activation_url(self):
-        return ('simpleads_job_activate', [self.id, self.auth])
-
-    @models.permalink
-    def get_deactivation_url(self):
-        return ('simpleads_job_deactivate', [self.id, self.auth])
 
     def clean(self):
         #making sure a job location is selected/typed in
