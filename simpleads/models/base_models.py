@@ -60,8 +60,59 @@ class Posting(models.Model):
     temporary = TemporaryPostingsManager()
     sites = models.ManyToManyField(Site)
 
+    def __unicode__(self):
+        return self.title
+
     def get_sites(self):
         return ', '.join([site.name for site in self.sites.all()])
     get_sites.allow_tags = True
     get_sites.admin_order_field = 'sites'
     get_sites.short_description = 'Sites'
+
+    def is_active(self):
+        return self.status == self.ACTIVE
+
+    def is_temporary(self):
+        return self.status == self.TEMPORARY
+
+    def get_status_with_icon(self):
+        from django.conf import settings
+
+        image = {
+            self.ACTIVE: 'icon-yes.gif',
+            self.TEMPORARY: 'icon-unknown.gif',
+            self.INACTIVE: 'icon-no.gif',
+        }[self.status]
+
+        try:
+            # Django 1.2
+            admin_media = settings.ADMIN_MEDIA_PREFIX
+            icon = '<img src="%(admin_media)simg/admin/%(image)s" alt="%(status)s" /> %(status)s'
+
+        except AttributeError:
+            # Django 1.3+
+            admin_media = settings.STATIC_URL
+            icon = '<img src="%(admin_media)sadmin/img/%(image)s" alt="%(status)s" /> %(status)s'
+
+        else:
+            admin_media = ''
+            icon = '%(status)s'
+
+        return icon % {'admin_media': admin_media,
+                       'image': image,
+                       'status': unicode(self.JOB_STATUS_CHOICES[self.status][1])}
+    get_status_with_icon.allow_tags = True
+    get_status_with_icon.admin_order_field = 'status'
+    get_status_with_icon.short_description = 'Status'
+
+    def activate(self):
+        self.status = self.ACTIVE
+        self.save()
+
+    def deactivate(self):
+        self.status = self.INACTIVE
+        self.save()
+
+    def email_published_before(self):
+        return Job.active.exclude(pk=self.id) \
+                          .filter(poster_email=self.poster_email).count() > 0

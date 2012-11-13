@@ -2,6 +2,7 @@
 from django.contrib.sites.managers import CurrentSiteManager
 
 
+## legacy...
 class TempJobsManager(CurrentSiteManager):
     def get_query_set(self):
         return super(TempJobsManager, self).get_query_set() \
