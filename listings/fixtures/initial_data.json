@@ -115,7 +115,7 @@
             "apply_online": true,
             "owner": null,
             "poster_email": "poster@email.com",
-            "spotlight": false,
+            "featured": false,
             "jobtype": 2,
             "views_count": 0
         }
@@ -143,7 +143,7 @@
             "apply_online": true,
             "owner": null,
             "poster_email": "poster@email.com",
-            "spotlight": false,
+            "featured": false,
             "jobtype": 3,
             "views_count": 0
         }

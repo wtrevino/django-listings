@@ -16,9 +16,9 @@ def deactivate_jobs(modeladmin, request, queryset):
 deactivate_jobs.short_description = _('Deactivate selected jobs.')
 
 
-def mark_spotlight(modeladmin, request, queryset):
-    queryset.update(spotlight=True)
-mark_spotlight.short_description = _('Mark selected jobs as spotlight.')
+def mark_featured(modeladmin, request, queryset):
+    queryset.update(featured=True)
+mark_featured.short_description = _('Mark selected jobs as featured.')
 
 
 class JobAdmin(admin.ModelAdmin):
@@ -26,12 +26,12 @@ class JobAdmin(admin.ModelAdmin):
         (_('Job Details'), {'fields': ['jobtype', 'category', 'title', \
                                     'city', 'outside_location', 'description']}),
         (_('Company Info'), {'fields': ['company', 'url', 'poster_email']}),
-        (_('Admin Info'),  {'fields': ['apply_online', 'status', 'spotlight']}),
+        (_('Admin Info'),  {'fields': ['apply_online', 'status', 'featured']}),
         (_('Owner info'),  {'fields': ['owner']}),
         (_('Sites info'),  {'fields': ['sites']}),
     ]
-    list_display = ('title', 'get_location', 'get_sites', 'company', 'created_on', 'get_status_with_icon', 'spotlight')
-    actions = [activate_jobs, deactivate_jobs, mark_spotlight]
+    list_display = ('title', 'get_location', 'get_sites', 'company', 'created_on', 'get_status_with_icon', 'featured')
+    actions = [activate_jobs, deactivate_jobs, mark_featured]
 
 
 class CategoryAdmin(admin.ModelAdmin):

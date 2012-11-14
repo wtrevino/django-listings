@@ -5,12 +5,12 @@
 {% if page_type == 'index' %}
 
     {% load listings_tags %}
-    {% get_spotlight_jobs 5 as spotlight_jobs %}
+    {% get_featured_jobs 5 as featured_jobs %}
 
         <div id="job-listings"></div> 
-            {% if spotlight_jobs %}
+            {% if featured_jobs %}
 		    <h2>Spotlight Jobs</h2>
-        	{% for job in spotlight_jobs %}
+        	{% for job in featured_jobs %}
 			    <div class="row-spot"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
@@ -19,7 +19,7 @@
                     <span class="la">in</span>
                          {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}
                 </span> 
-			    <span class="spotlight-image"></span> 
+			    <span class="featured-image"></span> 
 		        </div> 
             {% endfor %}
             {% endif %}

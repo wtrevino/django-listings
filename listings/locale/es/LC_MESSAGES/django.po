@@ -25,7 +25,7 @@ msgid "Deactivate selected jobs."
 msgstr "Desactivar trabajos seleccionados."
 
 #: admin.py:17
-msgid "Mark selected jobs as spotlight."
+msgid "Mark selected jobs as featured."
 msgstr "Destacar trabajos seleccionados."
 
 #: admin.py:21

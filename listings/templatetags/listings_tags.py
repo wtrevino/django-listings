@@ -25,11 +25,11 @@ class LatestJobsNode(template.Node):
         return ''
 
 
-# spotlight jobs template tag
-def do_spotlight_jobs(parser, token):
+# featured jobs template tag
+def do_featured_jobs(parser, token):
     bits = token.split_contents()
     if len(bits) != 4:
-        raise template.TemplateSyntaxError("'get_spotlight_jobs' tag takes exactly four arguments")
+        raise template.TemplateSyntaxError("'get_featured_jobs' tag takes exactly four arguments")
     return SpotlightJobsNode(bits[1], bits[3])
 
 
@@ -39,7 +39,7 @@ class SpotlightJobsNode(template.Node):
         self.varname = varname
 
     def render(self, context):
-        context[self.varname] = Job.active.filter(spotlight=True).order_by('-created_on')[:self.num]
+        context[self.varname] = Job.active.filter(featured=True).order_by('-created_on')[:self.num]
         return ''
 
 
@@ -96,7 +96,7 @@ def nofollow(content):
 
 register = template.Library()
 register.tag('get_latest_jobs', do_latest_jobs)
-register.tag('get_spotlight_jobs', do_spotlight_jobs)
+register.tag('get_featured_jobs', do_featured_jobs)
 register.tag('get_most_applied_jobs', do_most_applied_jobs)
 register.tag('get_categories', do_categories)
 register.tag('get_jobtypes', do_jobtypes)

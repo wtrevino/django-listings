@@ -52,7 +52,7 @@ class Posting(models.Model):
     auth = models.CharField(blank=True, editable=False, max_length=32)
 
     poster_email = models.EmailField(_('Poster email'), blank=False)
-    spotlight = models.BooleanField(_('Spotlight'), default=False)
+    featured = models.BooleanField(_('Spotlight'), default=False)
     objects = models.Manager()
 
     on_site = CurrentSiteManager()
