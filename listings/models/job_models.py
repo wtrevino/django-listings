@@ -42,7 +42,7 @@ class Category(SiteModel):
         a category order in case no one is provided.
     '''
     name = models.CharField(_('Name'), unique=True, max_length=32, blank=False)
-    var_name = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
+    slug = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
     title = models.TextField(_('Title'), blank=True)
     description = models.TextField(_('Description'), blank=True)
     keywords = models.TextField(_('Keywords'), blank=True)
@@ -62,7 +62,7 @@ class Category(SiteModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('listings_job_list_category', [self.var_name])
+        return ('listings_job_list_category', [self.slug])
 
     def save(self, *args, **kwargs):
         if not self.category_order:
@@ -71,18 +71,18 @@ class Category(SiteModel):
                                     latest('category_order').category_order + 1
             except Category.DoesNotExist:
                 self.category_order = 0
-        if not self.var_name:
-            self.var_name = slugify(self.name)
+        if not self.slug:
+            self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
 
 
 class Type(SiteModel):
     ''' The Type model, nothing special, just the name and
-        var_name fields. Again, the var_name is slugified by the overriden
+        slug fields. Again, the slug is slugified by the overriden
         save() method in case it's not provided.
     '''
     name = models.CharField(_('Name'), unique=True, max_length=16, blank=False)
-    var_name = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
+    slug = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
 
     class Meta:
         app_label = 'listings'
@@ -93,8 +93,8 @@ class Type(SiteModel):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.var_name:
-            self.var_name = slugify(self.name)
+        if not self.slug:
+            self.slug = slugify(self.name)
         super(Type, self).save(*args, **kwargs)
 
 
@@ -125,10 +125,10 @@ class City(SiteModel):
 
 class Job(Posting):
     if django_version[:2] > (1, 2):
-        category = models.ForeignKey(Category, verbose_name=_('Category'), blank=False, null=True, on_delete=models.SET_NULL)
+        category = models.ForeignKey('categories.Category', verbose_name=_('Category'), blank=False, null=True, on_delete=models.SET_NULL)
         jobtype = models.ForeignKey(Type, verbose_name=_('Job Type'), blank=False, null=True, on_delete=models.SET_NULL)
     else:
-        category = models.ForeignKey(Category, verbose_name=_('Category'), blank=False, null=False)
+        category = models.ForeignKey('categories.Category', verbose_name=_('Category'), blank=False, null=False)
         jobtype = models.ForeignKey(Type, verbose_name=_('Job Type'), blank=False, null=False)
 
     company = models.CharField(_('Company'), max_length=150, blank=False)

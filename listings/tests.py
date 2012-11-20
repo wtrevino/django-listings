@@ -15,14 +15,14 @@ class JobTestCase(unittest.TestCase):
         # Creating a set of job categories
         self.category_1 = Category.objects.create(name='Genetic Engineering')
         self.category_2 = Category.objects.create(name='Eye Design', 
-                                                            var_name='eyes')
+                                                            slug='eyes')
         self.category_3 = Category.objects.create(name='Bounty Hunting', 
                                                             category_order=4)
         self.category_4 = Category.objects.create(name='Origami')
 
         # Creating a set of job types
         self.job_type_1 = Type.objects.create(name='Full time', 
-                                                        var_name='fulltime')
+                                                        slug='fulltime')
         self.job_type_2 = Type.objects.create(name='Part time')
         self.job_type_3 = Type.objects.create(name='Freelance')
 
@@ -71,15 +71,15 @@ class JobTestCase(unittest.TestCase):
 
     def testSlugs(self):
         # Test category slugs
-        self.assertEqual(self.category_1.var_name, 'genetic-engineering')
-        self.assertEqual(self.category_2.var_name, 'eyes')
-        self.assertEqual(self.category_3.var_name, 'bounty-hunting')
-        self.assertEqual(self.category_4.var_name, 'origami')
+        self.assertEqual(self.category_1.slug, 'genetic-engineering')
+        self.assertEqual(self.category_2.slug, 'eyes')
+        self.assertEqual(self.category_3.slug, 'bounty-hunting')
+        self.assertEqual(self.category_4.slug, 'origami')
 
         # Test job type slugs
-        self.assertEqual(self.job_type_1.var_name, 'fulltime')
-        self.assertEqual(self.job_type_2.var_name, 'part-time')
-        self.assertEqual(self.job_type_3.var_name, 'freelance')
+        self.assertEqual(self.job_type_1.slug, 'fulltime')
+        self.assertEqual(self.job_type_2.slug, 'part-time')
+        self.assertEqual(self.job_type_3.slug, 'freelance')
 
         # Test city slugs
         self.assertEqual(self.city_1.ascii_name, 'la')

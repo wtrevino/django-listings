@@ -13,7 +13,7 @@
         	{% for job in featured_jobs %}
 			    <div class="row-spot"> 
 			    <span class="row-info"> 
-				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
+				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.slug}}.png" alt="Full Time" /> 
 				    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
@@ -31,7 +31,7 @@
         	{% for job in latest_jobs %}	
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
-				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
+				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.slug}}.png" alt="Full Time" /> 
                     <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
@@ -58,7 +58,7 @@
         	{% for job in most_applied_jobs %}	
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
-				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
+				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.slug}}.png" alt="Full Time" /> 
                     <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
@@ -79,8 +79,8 @@
             Only display&nbsp;  
             {% get_jobtypes %}
             {% for jobtype in jobtypes %}
-                <a href="{% url listings_job_list_category_type selected_category.var_name jobtype.var_name %}" title="{{jobtype}}">
-                    <img src="{{STATIC_URL}}img/icon-{{jobtype.var_name}}.png" alt="{{jobtype}}">
+                <a href="{% url listings_job_list_category_type selected_category.slug jobtype.slug %}" title="{{jobtype}}">
+                    <img src="{{STATIC_URL}}img/icon-{{jobtype.slug}}.png" alt="{{jobtype}}">
                 </a>
             {% endfor %}
             </div>
@@ -95,7 +95,7 @@
     	{% for job in object_list %}
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
-				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.var_name}}.png" alt="Full Time" /> 
+				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.slug}}.png" alt="Full Time" /> 
                     <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>

@@ -17,7 +17,7 @@
 							</div> 
                     {% endif %}
 				<h2>
-				    <img src="{{STATIC_URL}}img/icon-{{ object.jobtype.var_name }}.png" alt="Full-time" /> {{ object.title }}
+				    <img src="{{STATIC_URL}}img/icon-{{ object.jobtype.slug }}.png" alt="Full-time" /> {{ object.title }}
     			</h2>
 			<p> 
 				<span class="fading">at</span>
@@ -155,7 +155,7 @@
             <div id="job-bottom"> 
 				<div id="job-post-utils">
                     {% if object.category %}
-					<a href="{% url listings_job_list_category object.category.var_name %}" title="{{ object.category }}">&laquo; Go back to category</a><br />
+					<a href="{% url listings_job_list_category object.category.slug %}" title="{{ object.category }}">&laquo; Go back to category</a><br />
                     {% endif %}
 
                     <!--

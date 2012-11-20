@@ -102,18 +102,18 @@ def job_verify(request, job_id, auth):
                             object_id=job_id, extra_context=extra_context)
 
 
-def jobs_category(request, cvar_name=None, tvar_name=None):
+def jobs_category(request, cslug=None, tslug=None):
     ''' Displays a job list by category and/or job type but
         those two are optional.
     '''
     extra_context = {}
     queryset = Job.active.all()
-    if cvar_name:
-        category = get_object_or_404(Category, var_name=cvar_name)
+    if cslug:
+        category = get_object_or_404(Category, slug=cslug)
         queryset = queryset.filter(category=category)
         extra_context['selected_category'] = category
-    if tvar_name:
-        jobtype = get_object_or_404(Type, var_name=tvar_name)
+    if tslug:
+        jobtype = get_object_or_404(Type, slug=tslug)
         queryset = queryset.filter(jobtype=jobtype)
         extra_context['selected_jobtype'] = jobtype
     return object_list(request, queryset=queryset,
@@ -121,14 +121,14 @@ def jobs_category(request, cvar_name=None, tvar_name=None):
                     paginate_by=listings_settings.LISTINGS_JOBS_PER_PAGE)
 
 
-def jobs_in_city(request, city_name, tvar_name=None):
+def jobs_in_city(request, city_name, tslug=None):
     ''' Display a job list by city and job type (optional).
     '''
     city = get_object_or_404(City, ascii_name=city_name)
     queryset = Job.active.filter(city=city)
     extra_context = {'city': city}
-    if tvar_name:
-        jobtype = get_object_or_404(Type, var_name=tvar_name)
+    if tslug:
+        jobtype = get_object_or_404(Type, slug=tslug)
         queryset = queryset.filter(jobtype=jobtype)
         extra_context['selected_jobtype'] = jobtype
     return object_list(request, queryset=queryset,
@@ -153,12 +153,12 @@ def companies(request):
                                 template_name='listings/company_list.html')
 
 
-def jobs_at(request, company_slug, tvar_name=None):
+def jobs_at(request, company_slug, tslug=None):
     ''' Displays a job list by company, jobtype is optional.
     '''
     queryset = Job.active.filter(company_slug=company_slug)
-    if tvar_name:
-        jobtype = get_object_or_404(Type, var_name=tvar_name)
+    if tslug:
+        jobtype = get_object_or_404(Type, slug=tslug)
         queryset = queryset.filter(jobtype=jobtype)
         extra_context['selected_jobtype'] = jobtype
     return object_list(request, queryset=queryset)

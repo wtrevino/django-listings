@@ -61,13 +61,13 @@ urlpatterns += patterns('',
 
     #all jobs with category
     url(r'^' + listings_settings.LISTINGS_JOBS_URL +
-        '/(?P<cvar_name>[-\w]+)/$',
+        '/(?P<cslug>[-\w]+)/$',
         'listings.views.jobs_category',
         name='listings_job_list_category'),
 
     #all jobs with category and job type
     url(r'^' + listings_settings.LISTINGS_JOBS_URL +
-        '/(?P<cvar_name>[-\w]+)/(?P<tvar_name>[-\w]+)/$',
+        '/(?P<cslug>[-\w]+)/(?P<tslug>[-\w]+)/$',
         'listings.views.jobs_category',
         name='listings_job_list_category_type'),
 
@@ -90,7 +90,7 @@ urlpatterns += patterns('',
 
     #Jobs in city+jobtype view
     url(r'^' + listings_settings.LISTINGS_JOBS_IN_URL +
-        '/(?P<city_name>[-\w]+)/(?P<tvar_name>[-\w]+)/$',
+        '/(?P<city_name>[-\w]+)/(?P<tslug>[-\w]+)/$',
         'listings.views.jobs_in_city',
         name='listings_jobs_in_city_jobtype'),
 
@@ -135,7 +135,7 @@ urlpatterns += patterns('',
         name='listings_job_search'),
 
     #Feed
-    url(r'^rss/(?P<var_name>[-\w]+)/$',
+    url(r'^rss/(?P<slug>[-\w]+)/$',
         LatestJobsFeed(),
         name='listings_feed'),
 )

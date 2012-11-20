@@ -35,12 +35,12 @@ class JobAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'var_name': ('name',)}
+    prepopulated_fields = {'slug': ('name',)}
     list_display = ('name', 'category_order')
 
 
 class TypeAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'var_name': ('name',)}
+    prepopulated_fields = {'slug': ('name',)}
 
 
 class CityAdmin(admin.ModelAdmin):

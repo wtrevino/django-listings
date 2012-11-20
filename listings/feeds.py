@@ -10,11 +10,11 @@ from listings.conf.settings import LISTINGS_SITE_NAME
 
 class LatestJobsFeed(Feed):
 
-    def get_object(self, request, var_name):
-        if var_name == 'all':
+    def get_object(self, request, slug):
+        if slug == 'all':
             return None
         else:
-            return get_object_or_404(Category, var_name=var_name)
+            return get_object_or_404(Category, slug=slug)
 
     def title(self, obj=None):
         t = _(' %(site_name)s RSS Job feed') % {'site_name' : LISTINGS_SITE_NAME}

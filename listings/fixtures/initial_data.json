@@ -7,7 +7,7 @@
             "description": "",
             "title": "",
             "site": null,
-            "var_name": "programming",
+            "slug": "programming",
             "keywords": "",
             "name": "Programming"
         }
@@ -20,7 +20,7 @@
             "description": "",
             "title": "",
             "site": null,
-            "var_name": "marketing",
+            "slug": "marketing",
             "keywords": "",
             "name": "Marketing"
         }
@@ -33,7 +33,7 @@
             "description": "",
             "title": "",
             "site": null,
-            "var_name": "design",
+            "slug": "design",
             "keywords": "",
             "name": "Design"
         }
@@ -42,7 +42,7 @@
         "pk": 1,
         "model": "listings.type",
         "fields": {
-            "var_name": "fulltime",
+            "slug": "fulltime",
             "site": null,
             "name": "Full time"
         }
@@ -51,7 +51,7 @@
         "pk": 2,
         "model": "listings.type",
         "fields": {
-            "var_name": "parttime",
+            "slug": "parttime",
             "site": null,
             "name": "Part time"
         }
@@ -60,7 +60,7 @@
         "pk": 3,
         "model": "listings.type",
         "fields": {
-            "var_name": "freelance",
+            "slug": "freelance",
             "site": null,
             "name": "Freelance"
         }

@@ -8,7 +8,7 @@
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/rss/all/" />
     <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="{{STATIC_URL}}css/screen.css" type="text/css" media="screen" />
-    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="{% if selected_category %} {% url listings_feed selected_category.var_name %} {% else %} {% url listings_feed 'all' %} {% endif %}" />
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="{% if selected_category %} {% url listings_feed selected_category.slug %} {% else %} {% url listings_feed 'all' %} {% endif %}" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js" type="text/javascript"></script>    
  	<script src="{{STATIC_URL}}js/jquery.form.js" type="text/javascript"></script>
 	<script src="{{STATIC_URL}}js/cmxforms.js" type="text/javascript"></script>
@@ -81,8 +81,8 @@
 
             {% for category in categories %}
 
-			<li id="{{ category.var_name }}" {% if category.var_name == selected_category.var_name %}class="selected"{% endif %}>
-                <a href="{% url listings_job_list_category category.var_name %}" title="{{ category }}">
+			<li id="{{ category.slug }}" {% if category.slug == selected_category.slug %}class="selected"{% endif %}>
+                <a href="{% url listings_job_list_category category.slug %}" title="{{ category }}">
                 <span>{{ category }}</span>
                 <span class="cnr">&nbsp;</span>
                 </a>
@@ -103,7 +103,7 @@
 		    <br />
             {% for category in categories %}
                 <strong>{{ category.get_total_jobs }}</strong>
-                <a href="{% url listings_job_list_category category.var_name %}">{{ category }}</a>
+                <a href="{% url listings_job_list_category category.slug %}">{{ category }}</a>
                 <br />
             {% endfor %}
 	    </div><!-- #stats --> 
