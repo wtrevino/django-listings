@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import get_object_or_404, redirect, render_to_response
-from listings.models import Job, Category, Type, JobStat, JobSearch, City
+from listings.models import Job, Type, JobStat, JobSearch, City
+from categories.models import Category
 from listings.postman import *
 from django.views.generic.list_detail import object_detail, object_list
 from django.views.generic.create_update import update_object
