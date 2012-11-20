@@ -1,103 +1,9 @@
 [
     {
         "pk": 1,
-        "model": "listings.category",
-        "fields": {
-            "category_order": 0,
-            "description": "",
-            "title": "",
-            "site": null,
-            "slug": "programming",
-            "keywords": "",
-            "name": "Programming"
-        }
-    },
-    {
-        "pk": 2,
-        "model": "listings.category",
-        "fields": {
-            "category_order": 1,
-            "description": "",
-            "title": "",
-            "site": null,
-            "slug": "marketing",
-            "keywords": "",
-            "name": "Marketing"
-        }
-    },
-    {
-        "pk": 3,
-        "model": "listings.category",
-        "fields": {
-            "category_order": 2,
-            "description": "",
-            "title": "",
-            "site": null,
-            "slug": "design",
-            "keywords": "",
-            "name": "Design"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "listings.type",
-        "fields": {
-            "slug": "fulltime",
-            "site": null,
-            "name": "Full time"
-        }
-    },
-    {
-        "pk": 2,
-        "model": "listings.type",
-        "fields": {
-            "slug": "parttime",
-            "site": null,
-            "name": "Part time"
-        }
-    },
-    {
-        "pk": 3,
-        "model": "listings.type",
-        "fields": {
-            "slug": "freelance",
-            "site": null,
-            "name": "Freelance"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "listings.city",
-        "fields": {
-            "ascii_name": "los-angeles",
-            "site": null,
-            "name": "Los Angeles"
-        }
-    },
-    {
-        "pk": 2,
-        "model": "listings.city",
-        "fields": {
-            "ascii_name": "mumbai",
-            "site": null,
-            "name": "Mumbai"
-        }
-    },
-    {
-        "pk": 3,
-        "model": "listings.city",
-        "fields": {
-            "ascii_name": "london",
-            "site": null,
-            "name": "London"
-        }
-    },
-    {
-        "pk": 1,
         "model": "listings.job",
         "fields": {
             "status": 2,
-            "category": 1,
             "description": "Lorem ipsum.",
             "description_html": "",
             "title": "Web developer",
@@ -116,60 +22,7 @@
             "owner": null,
             "poster_email": "poster@email.com",
             "featured": false,
-            "jobtype": 2,
             "views_count": 0
-        }
-    },
-    {
-        "pk": 2,
-        "model": "listings.job",
-        "fields": {
-            "status": 2,
-            "category": 3,
-            "description": "Lorem ipsum.",
-            "description_html": "",
-            "title": "Designer",
-            "url": "",
-            "company": "Tyrell",
-            "outside_location": "",
-            "auth": "",
-            "company_slug": "",
-            "sites": [
-                1
-            ],
-            "created_on": "2012-11-13T05:54:29.572Z",
-            "joburl": "designer-at-tyrell",
-            "city": 2,
-            "apply_online": true,
-            "owner": null,
-            "poster_email": "poster@email.com",
-            "featured": false,
-            "jobtype": 3,
-            "views_count": 0
-        }
-    },
-    {
-        "pk": 1,
-        "model": "listings.jobstat",
-        "fields": {
-            "description": "Visit for [1]Web developer from IP: 127.0.0.1",
-            "ip": "127.0.0.1",
-            "site": null,
-            "job": 1,
-            "created_on": "2012-11-13T04:47:26.509Z",
-            "stat_type": "H"
-        }
-    },
-    {
-        "pk": 2,
-        "model": "listings.jobstat",
-        "fields": {
-            "description": "Visit for [2]Designer from IP: 127.0.0.1",
-            "ip": "127.0.0.1",
-            "site": null,
-            "job": 2,
-            "created_on": "2012-11-13T04:47:26.509Z",
-            "stat_type": "H"
         }
     }
 ]

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from listings.models import Job, Category, Type, JobStat
-from django.utils.encoding import force_unicode
+from listings.models import Job, Type, JobStat
+from categories.models import Category
 from django.utils.safestring import mark_safe
 from listings.conf import settings as listings_settings
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime, timedelta
+
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
     """ this overrides widget method to put radio buttons horizontally
@@ -16,6 +17,7 @@ class HorizRadioRenderer(forms.RadioSelect.renderer):
         """Outputs radios"""
         return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
+
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
@@ -23,21 +25,21 @@ class JobForm(forms.ModelForm):
         'city', 'outside_location', 'url', 'poster_email', 'apply_online')
         widgets = {
             'jobtype': forms.RadioSelect(renderer=HorizRadioRenderer),
-            'title': forms.TextInput(attrs={'size':50}),
-            'description': forms.Textarea(attrs={'rows':15, 'cols':80}),
-            'city': forms.Select(attrs={'id':'city_id'}),
-            'outside_location': forms.TextInput(attrs={'id':'location_outside_ro_where', \
-             'maxlength':140, 'size':50}),
-            'company': forms.TextInput(attrs={'size':40}),
-            'url': forms.TextInput(attrs={'size':35}),
-            'poster_email': forms.TextInput(attrs={'size':40}),
+            'title': forms.TextInput(attrs={'size': 50}),
+            'description': forms.Textarea(attrs={'rows': 15, 'cols': 80}),
+            'city': forms.Select(attrs={'id': 'city_id'}),
+            'outside_location': forms.TextInput(attrs={'id': 'location_outside_ro_where', \
+             'maxlength': 140, 'size': 50}),
+            'company': forms.TextInput(attrs={'size': 40}),
+            'url': forms.TextInput(attrs={'size': 35}),
+            'poster_email': forms.TextInput(attrs={'size': 40}),
         }
 
     def __init__(self, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)
         self.fields['jobtype'].empty_label = None
         self.fields['category'].empty_label = None
-        try:               
+        try:
             self.fields['category'].initial = Category.on_site.all()[0].id
         except IndexError:
             pass
@@ -46,6 +48,7 @@ class JobForm(forms.ModelForm):
         except IndexError:
             pass
 
+
 class CaptchaJobForm(JobForm):
     if listings_settings.LISTINGS_CAPTCHA_POST == "simple":
         from captcha.fields import CaptchaField
@@ -53,18 +56,19 @@ class CaptchaJobForm(JobForm):
     else:
         pass
 
+
 class ApplicationForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.applicant_data = kwargs.pop('applicant_data')
         super(ApplicationForm, self).__init__(*args, **kwargs)
-    apply_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'id':'apply_name', 'size':30}))
-    apply_email = forms.EmailField(max_length=50, widget=forms.TextInput(attrs={'id':'apply_email', 'size':30}))
-    apply_msg = forms.CharField(widget=forms.Textarea(attrs={'rows':15, 'cols':60, 'id':'apply_msg'}))
+    apply_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'id': 'apply_name', 'size': 30}))
+    apply_email = forms.EmailField(max_length=50, widget=forms.TextInput(attrs={'id': 'apply_email', 'size': 30}))
+    apply_msg = forms.CharField(widget=forms.Textarea(attrs={'rows': 15, 'cols': 60, 'id': 'apply_msg'}))
     apply_cv = forms.FileField(required=False)
 
     if listings_settings.LISTINGS_CAPTCHA_APPLICATION == "simple":
         from captcha.fields import CaptchaField
-        captcha = CaptchaField()     
+        captcha = CaptchaField()
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -78,7 +82,7 @@ class ApplicationForm(forms.Form):
             d2 = datetime.now()
             remaining = d1 - d2
             remaining = remaining.seconds / 60
-            raise forms.ValidationError(_('You need to wait %(remaining)s more minute(s) before you can apply for a job again.') % {'remaining': remaining+1})
+            raise forms.ValidationError(_('You need to wait %(remaining)s more minute(s) before you can apply for a job again.') % {'remaining': remaining + 1})
 
         if cleaned_data['apply_cv']:
             #checking if cv extension is permitted
@@ -88,6 +92,6 @@ class ApplicationForm(forms.Form):
             #checking cv size does not exceed the permitted one
             permitted_size = listings_settings.LISTINGS_MAX_UPLOAD_SIZE
             if cleaned_data['apply_cv']._size > permitted_size:
-                raise forms.ValidationError(_('Your resume/CV must not exceed the file size limit. (%(size)sMB)') % {'size': (permitted_size/1024)/1024})
+                raise forms.ValidationError(_('Your resume/CV must not exceed the file size limit. (%(size)sMB)') % {'size': (permitted_size / 1024) / 1024})
 
-        return cleaned_data          
+        return cleaned_data

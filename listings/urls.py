@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls.defaults import *
-from listings.models import Job, City
+from listings.models import Job
 from listings.conf import settings as listings_settings
 from listings.feeds import LatestJobsFeed
+
+from cities_light.models import City
 
 if listings_settings.LISTINGS_CAPTCHA_POST == 'simple':
     from listings.forms import CaptchaJobForm

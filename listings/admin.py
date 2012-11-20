@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from listings.models import Category, Type, Job, City, JobStat, JobSearch
+from listings.models import Type, Job, JobStat, JobSearch
 
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
@@ -54,9 +54,8 @@ class JobStatAdmin(admin.ModelAdmin):
 class JobSearchAdmin(admin.ModelAdmin):
     readonly_fields = ['keywords', 'created_on']
 
-admin.site.register(Category, CategoryAdmin)
 admin.site.register(Type, TypeAdmin)
 admin.site.register(Job, JobAdmin)
-admin.site.register(City, CityAdmin)
+#admin.site.register(City, CityAdmin)
 admin.site.register(JobStat, JobStatAdmin)
 admin.site.register(JobSearch, JobSearchAdmin)

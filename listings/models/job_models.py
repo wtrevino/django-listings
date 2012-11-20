@@ -27,53 +27,52 @@ except ImportError:
 
 
 class SiteModel(models.Model):
-    site = models.ForeignKey(Site, blank=False, null=True)
+    sites = models.ManyToManyField(Site)
     objects = models.Manager()
     on_site = CurrentSiteManager()
 
     class Meta:
         abstract = True
 
+# class Category(SiteModel):
+#     ''' The Category model, very straight forward. Includes a get_total_jobs
+#         method that returns the total of jobs with that category.
+#         The save() method is overriden so it can automatically asign
+#         a category order in case no one is provided.
+#     '''
+#     name = models.CharField(_('Name'), unique=True, max_length=32, blank=False)
+#     slug = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
+#     title = models.TextField(_('Title'), blank=True)
+#     description = models.TextField(_('Description'), blank=True)
+#     keywords = models.TextField(_('Keywords'), blank=True)
+#     category_order = models.PositiveIntegerField(_('Category order'),
+#                                                     unique=True, blank=True)
 
-class Category(SiteModel):
-    ''' The Category model, very straight forward. Includes a get_total_jobs
-        method that returns the total of jobs with that category.
-        The save() method is overriden so it can automatically asign
-        a category order in case no one is provided.
-    '''
-    name = models.CharField(_('Name'), unique=True, max_length=32, blank=False)
-    slug = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
-    title = models.TextField(_('Title'), blank=True)
-    description = models.TextField(_('Description'), blank=True)
-    keywords = models.TextField(_('Keywords'), blank=True)
-    category_order = models.PositiveIntegerField(_('Category order'),
-                                                    unique=True, blank=True)
+#     class Meta:
+#         app_label = 'listings'
+#         verbose_name = _('Category')
+#         verbose_name_plural = _('Categories')
 
-    class Meta:
-        app_label = 'listings'
-        verbose_name = _('Category')
-        verbose_name_plural = _('Categories')
+#     def get_total_jobs(self):
+#         return Job.active.filter(category=self).count()
 
-    def get_total_jobs(self):
-        return Job.active.filter(category=self).count()
+#     def __unicode__(self):
+#         return self.name
 
-    def __unicode__(self):
-        return self.name
+#     @models.permalink
+#     def get_absolute_url(self):
+#         return ('listings_job_list_category', [self.slug])
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('listings_job_list_category', [self.slug])
-
-    def save(self, *args, **kwargs):
-        if not self.category_order:
-            try:
-                self.category_order = Category.objects.\
-                                    latest('category_order').category_order + 1
-            except Category.DoesNotExist:
-                self.category_order = 0
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         if not self.category_order:
+#             try:
+#                 self.category_order = Category.objects.\
+#                                     latest('category_order').category_order + 1
+#             except Category.DoesNotExist:
+#                 self.category_order = 0
+#         if not self.slug:
+#             self.slug = slugify(self.name)
+#         super(Category, self).save(*args, **kwargs)
 
 
 class Type(SiteModel):
@@ -98,29 +97,29 @@ class Type(SiteModel):
         super(Type, self).save(*args, **kwargs)
 
 
-class City(SiteModel):
-    ''' A model for cities, with a get_total_jobs method to get
-        the total of jobs in that city, save() method is overriden
-        to slugify name to ascii_name.
-    '''
-    name = models.CharField(_('Name'), unique=True, max_length=50, blank=False)
-    ascii_name = models.SlugField(_('ASCII Name'), unique=True, max_length=50, blank=False)
+# class City(SiteModel):
+#     ''' A model for cities, with a get_total_jobs method to get
+#         the total of jobs in that city, save() method is overriden
+#         to slugify name to ascii_name.
+#     '''
+#     name = models.CharField(_('Name'), unique=True, max_length=50, blank=False)
+#     ascii_name = models.SlugField(_('ASCII Name'), unique=True, max_length=50, blank=False)
 
-    class Meta:
-        app_label = 'listings'
-        verbose_name = _('City')
-        verbose_name_plural = _('Cities')
+#     class Meta:
+#         app_label = 'listings'
+#         verbose_name = _('City')
+#         verbose_name_plural = _('Cities')
 
-    def get_total_jobs(self):
-        return Job.active.filter(city=self).count()
+#     def get_total_jobs(self):
+#         return Job.active.filter(city=self).count()
 
-    def __unicode__(self):
-        return self.name
+#     def __unicode__(self):
+#         return self.name
 
-    def save(self, *args, **kwargs):
-        if not self.ascii_name:
-            self.ascii_name = slugify(self.name)
-        super(City, self).save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         if not self.ascii_name:
+#             self.ascii_name = slugify(self.name)
+#         super(City, self).save(*args, **kwargs)
 
 
 class Job(Posting):
@@ -134,7 +133,7 @@ class Job(Posting):
     company = models.CharField(_('Company'), max_length=150, blank=False)
     company_slug = models.SlugField(max_length=150,
                                             blank=False, editable=False)
-    city = models.ForeignKey(City, verbose_name=_('City'), null=True, blank=True)
+    city = models.ForeignKey('cities_light.City', verbose_name=_('City'), null=True, blank=True)
 
     #url of the company
     url = models.URLField(verify_exists=False, max_length=150, blank=True)

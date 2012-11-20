@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django import template
-from listings.models import Job, Category, Type, JobStat
 from django.utils.safestring import mark_safe
 from django.db.models import Count
+
+from listings.models import Job, Type, JobStat
+from categories.models import Category
+
 import re
 
 
@@ -73,7 +76,7 @@ def do_categories(parser, token):
 class CategoriesNode(template.Node):
     def render(self, context):
         context['total_jobs'] = Job.active.all().count()
-        context['categories'] = Category.on_site.all().order_by('category_order')
+        context['categories'] = Category.objects.all().order_by('order')
         return ''
 
 
