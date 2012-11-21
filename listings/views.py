@@ -1,21 +1,24 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import get_object_or_404, redirect, render_to_response
-from listings.models import Job, Type, JobStat, JobSearch
-from categories.models import Category
-from cities_light.models import City
-from listings.postman import *
 from django.views.generic.list_detail import object_detail, object_list
 from django.views.generic.create_update import update_object
 from django.core.context_processors import csrf
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.template import RequestContext
+from django.db.models import Count
+from django.http import Http404
+
+from listings.models import Job, Type, JobStat, JobSearch
+from listings.models.base_models import POSTING_TEMPORARY, POSTING_ACTIVE
+from listings.postman import *
 from listings.helpers import *
 from listings.forms import ApplicationForm, JobForm
 from listings.conf import settings as listings_settings
-from django.db.models import Count
-from django.http import Http404
+
+from categories.models import Category
+from cities_light.models import City
 
 
 def job_detail(request, job_id, joburl):
@@ -172,7 +175,7 @@ def job_confirm(request, job_id, auth):
         if not then it will need to be verified by a moderator.
     '''
     job = get_object_or_404(Job, pk=job_id, auth=auth)
-    if job.status not in (Job.ACTIVE, Job.TEMPORARY):
+    if job.status not in (POSTING_ACTIVE, POSTING_TEMPORARY):
         raise Http404
     new_post = job.is_temporary()
     requires_mod = not job.email_published_before() and \

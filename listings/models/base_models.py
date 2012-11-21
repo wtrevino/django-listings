@@ -42,7 +42,7 @@ class Posting(models.Model):
     description = models.TextField(_('Description'), blank=False)
     description_html = models.TextField(editable=False)
 
-    #city = models.ForeignKey(City, verbose_name=_('City'), null=True, blank=True)
+    city = models.ForeignKey('cities_light.City', verbose_name=_('City'), null=True, blank=True)
     outside_location = models.CharField(_('Outside location'), max_length=150, blank=True)
 
     created_on = models.DateTimeField(_('Created on'), editable=False, \
@@ -106,15 +106,15 @@ class Posting(models.Model):
     get_status_with_icon.short_description = 'Status'
 
     def activate(self):
-        self.status = self.ACTIVE
+        self.status = POSTING_ACTIVE
         self.save()
 
     def deactivate(self):
-        self.status = self.INACTIVE
+        self.status = POSTING_INACTIVE
         self.save()
 
     def email_published_before(self):
-        return self.active.exclude(pk=self.id) \
+        return self.__class__.active.exclude(pk=self.id) \
                           .filter(poster_email=self.poster_email).count() > 0
 
     @models.permalink

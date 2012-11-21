@@ -126,8 +126,6 @@ class Job(Posting):
     company = models.CharField(_('Company'), max_length=150, blank=False)
     company_slug = models.SlugField(max_length=150,
                                             blank=False, editable=False)
-    city = models.ForeignKey('cities_light.City', verbose_name=_('City'), null=True, blank=True)
-
     #url of the company
     url = models.URLField(verify_exists=False, max_length=150, blank=True)
 
