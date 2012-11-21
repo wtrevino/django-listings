@@ -12,7 +12,6 @@ from django.contrib.sites.managers import CurrentSiteManager
 from django.conf import settings as django_settings
 
 from listings.helpers import last_hour, getIP
-from listings.managers import ActiveJobsManager, TempJobsManager
 from listings.models.base_models import Posting
 from listings.conf import settings as listings_settings
 
@@ -24,15 +23,6 @@ try:
     from hashlib import md5
 except ImportError:
     from md5 import md5
-
-
-class SiteModel(models.Model):
-    sites = models.ManyToManyField(Site)
-    objects = models.Manager()
-    on_site = CurrentSiteManager()
-
-    class Meta:
-        abstract = True
 
 # class Category(SiteModel):
 #     ''' The Category model, very straight forward. Includes a get_total_jobs
@@ -75,13 +65,16 @@ class SiteModel(models.Model):
 #         super(Category, self).save(*args, **kwargs)
 
 
-class Type(SiteModel):
+class Type(models.Model):
     ''' The Type model, nothing special, just the name and
         slug fields. Again, the slug is slugified by the overriden
         save() method in case it's not provided.
     '''
     name = models.CharField(_('Name'), unique=True, max_length=16, blank=False)
     slug = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
+    sites = models.ManyToManyField(Site)
+    objects = models.Manager()
+    on_site = CurrentSiteManager()
 
     class Meta:
         app_label = 'listings'
@@ -214,7 +207,7 @@ class Job(Posting):
             self.sites.add(current_site)
 
 
-class JobStat(SiteModel):
+class JobStat(models.Model):
     APPLICATION = 'A'
     HIT = 'H'
     SPAM = 'S'
@@ -231,6 +224,9 @@ class JobStat(SiteModel):
     ip = models.IPAddressField()
     stat_type = models.CharField(max_length=1, choices=STAT_TYPES)
     description = models.CharField(_('Description'), max_length=250)
+    sites = models.ManyToManyField(Site)
+    objects = models.Manager()
+    on_site = CurrentSiteManager()
 
     class Meta:
         app_label = 'listings'
