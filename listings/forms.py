@@ -39,6 +39,10 @@ class JobForm(forms.ModelForm):
         super(JobForm, self).__init__(*args, **kwargs)
         self.fields['jobtype'].empty_label = None
         self.fields['category'].empty_label = None
+        city = self.fields['city']
+        choices = [(city.pk, unicode(city.name)) for city in city.queryset.all()]
+        self.fields['city'].choices = choices
+
         try:
             self.fields['category'].initial = Category.on_site.all()[0].id
         except IndexError:
