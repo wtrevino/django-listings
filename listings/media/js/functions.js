@@ -48,15 +48,15 @@
 		{
 			if ($("#location_outside_ro").is(":visible"))
 			{
-				$("#city_id").removeAttr("disabled");
+				$("#id_city").removeAttr("disabled");
 				$("#location_outside_ro").hide();
 				$("#other_location_label").html(Jobber.I18n.js.location_other);
 			}
 			else
 			{
-				$("#city_id").attr("disabled", "disabled");
+				$("#id_city").attr("disabled", "disabled");
 				$("#location_outside_ro").show();
-				$("#location_outside_ro_where").focus();
+				$("#id_outside_location").focus();
 				$("#other_location_label").html(Jobber.I18n.js.location_pick_from_list);
 			}
 		},
