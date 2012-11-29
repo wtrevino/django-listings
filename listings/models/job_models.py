@@ -235,17 +235,8 @@ class JobStat(models.Model):
         return self.description
 
     def save(self, *args, **kwargs):
-        if self.stat_type == self.APPLICATION:
-            self.description = u'Job application for [%d]%s from IP: %s' % \
-                                            (self.job.pk, self.job.title, self.ip)
-        elif self.stat_type == self.HIT:
-            self.description = u'Visit for [%d]%s from IP: %s' % \
-                                            (self.job.pk, self.job.title, self.ip)
-        elif self.stat_type == self.SPAM:
-            self.description = u'Spam report for [%d]%s from IP: %s' % \
-                                            (self.job.pk, self.job.title, self.ip)
-        else:
-            self.description = u"Unkwown stat"
+        self.description = u'%s for [%d]%s from IP: %s' % \
+                                            (self.get_stat_type_display(), self.job.pk, self.job.title, self.ip)
         super(JobStat, self).save(*args, **kwargs)
 
 
