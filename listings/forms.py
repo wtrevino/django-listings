@@ -27,7 +27,6 @@ class JobForm(forms.ModelForm):
             'jobtype': forms.RadioSelect(renderer=HorizRadioRenderer),
             'title': forms.TextInput(attrs={'size': 50}),
             'description': forms.Textarea(attrs={'rows': 15, 'cols': 80}),
-            'city': forms.Select(),
             'outside_location': forms.TextInput(attrs={'maxlength': 140, 'size': 50}),
             'company': forms.TextInput(attrs={'size': 40}),
             'url': forms.TextInput(attrs={'size': 35}),
