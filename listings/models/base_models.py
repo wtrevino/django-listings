@@ -100,7 +100,7 @@ class Posting(models.Model):
 
         return icon % {'admin_media': admin_media,
                        'image': image,
-                       'status': unicode(POSTING_STATUS_CHOICES[self.status][1])}
+                       'status': self.get_status_display()}
     get_status_with_icon.allow_tags = True
     get_status_with_icon.admin_order_field = 'status'
     get_status_with_icon.short_description = 'Status'

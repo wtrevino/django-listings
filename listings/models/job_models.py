@@ -124,6 +124,8 @@ class Job(Posting):
         jobtype = models.ForeignKey(Type, verbose_name=_('Job Type'), blank=False, null=False)
 
     company = models.CharField(_('Company'), max_length=150, blank=False)
+
+    #TODO: Esto podria ser un atributo mejor...
     company_slug = models.SlugField(max_length=150,
                                             blank=False, editable=False)
     #url of the company
