@@ -5,7 +5,13 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 
 from datetime import datetime
+import uuid
+import time
 
+try:
+    from hashlib import md5
+except ImportError:
+    from md5 import md5
 
 POSTING_INACTIVE = 0
 POSTING_TEMPORARY = 1
@@ -50,6 +56,7 @@ class Posting(models.Model):
     status = models.IntegerField(choices=POSTING_STATUS_CHOICES, default=POSTING_TEMPORARY)
     views_count = models.IntegerField(editable=False, default=0)
     auth = models.CharField(blank=True, editable=False, max_length=32)
+    admin_auth = models.CharField(blank=True, editable=False, max_length=32)
 
     poster_email = models.EmailField(_('Poster email'), blank=False)
     featured = models.BooleanField(_('Spotlight'), default=False)
@@ -117,6 +124,20 @@ class Posting(models.Model):
         return self.__class__.active.exclude(pk=self.id) \
                           .filter(poster_email=self.poster_email).count() > 0
 
+    def _set_auth_code(self, attr):
+        generated = md5(unicode(self.id) + \
+                            unicode(uuid.uuid1()) + \
+                            unicode(time.time())).hexdigest()
+        setattr(self, attr, generated)
+
+    def save(self, *args, **kwargs):
+        #save auth codes
+        if not self.auth:
+            self._set_auth_code('auth')
+        if not self.admin_auth:
+            self._set_auth_code('admin_auth')
+        super(Posting, self).save(*args, **kwargs)
+
     @models.permalink
     def get_edit_url(self):
         return ('listings_ad_edit', [self.id, self.auth])
@@ -127,7 +148,7 @@ class Posting(models.Model):
 
     @models.permalink
     def get_activation_url(self):
-        return ('listings_ad_activate', [self.id, self.auth])
+        return ('listings_ad_activate', [self.id, self.admin_auth])
 
     @models.permalink
     def get_deactivation_url(self):

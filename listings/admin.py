@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 
-from listings.models import Type, Job, JobStat, JobSearch
+from listings.models import Type, Job, JobStat, JobSearch, POSTING_ACTIVE, POSTING_INACTIVE
 
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 
 def activate_jobs(modeladmin, request, queryset):
-    queryset.update(status=Job.ACTIVE)
-activate_jobs.short_description = _('Activate selected jobs.')
+    queryset.update(status=POSTING_ACTIVE)
+activate_jobs.short_description = _('Activate selected ads.')
 
 
 def deactivate_jobs(modeladmin, request, queryset):
-    queryset.update(status=Job.INACTIVE)
-deactivate_jobs.short_description = _('Deactivate selected jobs.')
+    queryset.update(status=POSTING_INACTIVE)
+deactivate_jobs.short_description = _('Deactivate selected ads.')
 
 
 def mark_featured(modeladmin, request, queryset):
     queryset.update(featured=True)
-mark_featured.short_description = _('Mark selected jobs as featured.')
+mark_featured.short_description = _('Mark selected ads as featured.')
 
 
 class JobAdmin(admin.ModelAdmin):

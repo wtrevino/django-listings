@@ -16,13 +16,6 @@ from listings.models.base_models import Posting
 from listings.conf import settings as listings_settings
 
 import datetime
-import uuid
-import time
-
-try:
-    from hashlib import md5
-except ImportError:
-    from md5 import md5
 
 # class Category(SiteModel):
 #     ''' The Category model, very straight forward. Includes a get_total_jobs
@@ -171,11 +164,6 @@ class Job(Posting):
             raise ValidationError(_('You must select or type a job location.'))
 
     def save(self, *args, **kwargs):
-        #saving auth code
-        if not self.auth:
-            self.auth = md5(unicode(self.id) + \
-                            unicode(uuid.uuid1()) + \
-                            unicode(time.time())).hexdigest()
         #saving company slug
         self.company_slug = slugify(self.company)
 

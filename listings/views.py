@@ -221,7 +221,7 @@ def job_activate(request, job_id, auth):
     ''' Gets a job and activates it, only if it's not already activated,
         it also sends the notification mail to the poster.
     '''
-    job = get_object_or_404(Job, pk=job_id, auth=auth)
+    job = get_object_or_404(Job, pk=job_id, admin_auth=auth)
     extra_context = {}
     if not job.is_active():
         job.activate()

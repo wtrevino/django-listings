@@ -44,14 +44,13 @@
 							<td valign="top">Location:</td>
 							<td>
 
+								{{ form.region }}
+
                                 {{ form.city }}
 
 								<a id="other_location_label" href="#" onclick="Jobber.HandleLocationOutsideRo(); return false;">other</a>
 								<div id="location_outside_ro" style="display: none;">
 									where ?
-                                    <!--
-                                    <input type="text" name="id_outside_location" id="id_outside_location" size="50" maxlength="140"  />
-                                    -->
 
                                     {{ form.outside_location }}
 									<div class="suggestion">e.g. 'London, UK'</div>

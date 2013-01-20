@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from django import forms
+
 from listings.models import Job, Type, JobStat
-from categories.models import Category
-from django.utils.safestring import mark_safe
 from listings.conf import settings as listings_settings
+from listings import GEO_LEVEL_COUNTRY
+
+from django.utils.safestring import mark_safe
+from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+
+from categories.models import Category
+
 from datetime import datetime, timedelta
 
 
@@ -32,6 +38,9 @@ class JobForm(forms.ModelForm):
             'url': forms.TextInput(attrs={'size': 35}),
             'poster_email': forms.TextInput(attrs={'size': 40}),
         }
+
+    if settings.LISTINGS_GEO_LEVEL == GEO_LEVEL_COUNTRY:
+        region = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)
