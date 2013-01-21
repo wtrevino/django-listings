@@ -17,7 +17,7 @@ def validate_file_extension(value):
 class FeedType(models.Model):
     name = models.CharField(_('Name'), unique=True, max_length=100, blank=False)
     template = models.FileField(upload_to=upload_to, validators=[validate_file_extension, ])
-    content_type = models.CharField(_('Content type'), unique=True, max_length=100, blank=False, default='application/xml')
+    content_type = models.CharField(_('Content type'), max_length=100, blank=False, default='application/xml')
 
     def __unicode__(self):
         return self.name
