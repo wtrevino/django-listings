@@ -24,7 +24,7 @@ class LatestJobsNode(template.Node):
         self.varname = varname
 
     def render(self, context):
-        context[self.varname] = Job.active.all().order_by('-created_on')[:self.num]
+        context[self.varname] = Job.on_site.all().order_by('-created_on')[:self.num]
         return ''
 
 
@@ -42,7 +42,7 @@ class SpotlightJobsNode(template.Node):
         self.varname = varname
 
     def render(self, context):
-        context[self.varname] = Job.active.filter(featured=True).order_by('-created_on')[:self.num]
+        context[self.varname] = Job.on_site.filter(featured=True).order_by('-created_on')[:self.num]
         return ''
 
 
@@ -63,7 +63,7 @@ class MostAppliedJobsNode(template.Node):
         applications = JobStat.on_site.filter(stat_type='A').values('job').annotate(Count('job')).order_by('-job__count')[:self.num]
         jobs = []
         for application in applications:
-            jobs.append(Job.active.get(pk=application['job']))
+            jobs.append(Job.on_site.get(pk=application['job']))
         context[self.varname] = jobs
         return ''
 
@@ -75,8 +75,8 @@ def do_categories(parser, token):
 
 class CategoriesNode(template.Node):
     def render(self, context):
-        context['total_jobs'] = Job.active.all().count()
-        context['categories'] = Category.objects.all().order_by('order')
+        context['total_jobs'] = Job.on_site.all().count()
+        context['categories'] = Category.on_site.all().order_by('order')
         return ''
 
 
