@@ -141,3 +141,8 @@ urlpatterns += patterns('',
         LatestJobsFeed(),
         name='listings_feed'),
 )
+
+#feeds
+urlpatterns += patterns('',
+    url(r'^feeds/', include('listings.syndication.urls')),
+)

@@ -26,3 +26,7 @@ class FeedType(models.Model):
 class Feed(models.Model):
     site = models.ManyToManyField(Site)
     feed_type = models.ForeignKey(FeedType)
+    url = models.CharField(_('URL'), unique=True, max_length=100, blank=False)
+
+    def __unicode__(self):
+        return self.feed_type.name

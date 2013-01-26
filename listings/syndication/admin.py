@@ -14,7 +14,7 @@ class FeedTemplateInput(ClearableFileInput):
             return '<div style="border: 1px solid #bbb; border-radius: 10px; padding: 5px;"><code> %s </code></div>' % value.read().replace(' ', '&nbsp;').replace('<', '&lt;').replace('>', '&gt;').replace('\n', '<br />').replace('%', '&#37;')  # i know... ugly :D
         if hasattr(value, 'read'):
             self.template_with_initial = u'%(initial_text)s: %(initial)s %(clear_template)s<br /><br /> ' + _get_template_content(value) + '   %(input_text)s: %(input)s'
-        return super(FeedTemplateInput, self).render(name, value, attrs=None)
+        return super(FeedTemplateInput, self).render(name, value, attrs=attrs)
 
 
 class FeedTypeForm(forms.ModelForm):
