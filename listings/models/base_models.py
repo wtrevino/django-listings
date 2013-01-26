@@ -144,7 +144,7 @@ class Posting(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('listings_ad_detail', [self.id, self.joburl])
+        return ('listings_ad_detail', [self.id, self.ad_url])
 
     @models.permalink
     def get_activation_url(self):

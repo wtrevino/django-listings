@@ -125,7 +125,7 @@ class Job(Posting):
     url = models.URLField(verify_exists=False, max_length=150, blank=True)
 
     #url of the job post
-    joburl = models.CharField(blank=True, editable=False, max_length=32)
+    ad_url = models.CharField(blank=True, editable=False, max_length=32)
 
     apply_online = models.BooleanField(default=True, verbose_name=_('Allow online applications.'),
                                     help_text=_('If you are unchecking this, then add a description on how to apply online!'))
@@ -168,7 +168,7 @@ class Job(Posting):
         self.company_slug = slugify(self.company)
 
         #saving job url
-        self.joburl = slugify(self.title) + \
+        self.ad_url = slugify(self.title) + \
                         '-' + listings_settings.LISTINGS_AT_URL + \
                         '-' + slugify(self.company)
 

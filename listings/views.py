@@ -21,13 +21,13 @@ from categories.models import Category
 from cities_light.models import City
 
 
-def job_detail(request, job_id, joburl):
+def job_detail(request, job_id, ad_url):
     ''' Displays an active job and its application form depending if
         the job has online applications or not. Handles the job applications
         and sends notifications emails.
     '''
     try:
-        job = Job.active.get(pk=job_id, joburl=joburl)
+        job = Job.active.get(pk=job_id, ad_url=ad_url)
         extra_context = {'page_type': 'detail',
                'cv_extensions': listings_settings.LISTINGS_CV_EXTENSIONS,
                'markup_lang': listings_settings.LISTINGS_MARKUP_LANGUAGE}
@@ -67,7 +67,7 @@ def job_detail(request, job_id, joburl):
                                 messages.INFO,
                                 _('Your application was sent successfully.'))
                     extra_context['page_type'] = 'application'
-                    queryset = Job.active.filter(joburl=joburl)
+                    queryset = Job.active.filter(ad_url=ad_url)
                     return object_detail(request, queryset=queryset,
                                         object_id=job_id,
                                         extra_context=extra_context)
@@ -85,7 +85,7 @@ def job_detail(request, job_id, joburl):
 
         # Only display the job, without an application form
         else:
-            queryset = Job.active.filter(joburl=joburl)
+            queryset = Job.active.filter(ad_url=ad_url)
             return object_detail(request, queryset=queryset,
                                 object_id=job_id,
                                 extra_context=extra_context)

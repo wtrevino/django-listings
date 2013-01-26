@@ -75,7 +75,7 @@ urlpatterns += patterns('',
 
     #Job detail
     url(r'^' + listings_settings.LISTINGS_JOB_URL +
-        '/(?P<job_id>\d+)/(?P<joburl>[-\w]+)/$',
+        '/(?P<job_id>\d+)/(?P<ad_url>[-\w]+)/$',
         'listings.views.job_detail',
         name='listings_ad_detail'),
 

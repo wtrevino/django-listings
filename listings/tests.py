@@ -86,9 +86,9 @@ class JobTestCase(unittest.TestCase):
         self.assertEqual(self.city_2.ascii_name, 'san-francisco')
 
         # Test job slugs
-        self.assertEqual(self.job_1.joburl, 
+        self.assertEqual(self.job_1.ad_url,
           'genetist-needed-'+settings.LISTINGS_AT_URL+'-tyrell-corporation')
-        self.assertEqual(self.job_2.joburl, 
+        self.assertEqual(self.job_2.ad_url,
              'wanted-eye-designer-'+settings.LISTINGS_AT_URL+'-tyrell-corp')
 
         # Test company slugs

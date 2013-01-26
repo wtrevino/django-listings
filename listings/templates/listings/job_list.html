@@ -14,7 +14,7 @@
 			    <div class="row-spot"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.slug}}.png" alt="Full Time" /> 
-				    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
+				    <a href="{% url listings_ad_detail job.id job.ad_url %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
                          {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}
@@ -32,7 +32,7 @@
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.slug}}.png" alt="Full Time" /> 
-                    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
+                    <a href="{% url listings_ad_detail job.id job.ad_url %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
                         {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}
@@ -59,7 +59,7 @@
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.slug}}.png" alt="Full Time" /> 
-                    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
+                    <a href="{% url listings_ad_detail job.id job.ad_url %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
                         {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}
@@ -96,7 +96,7 @@
 			    <div class="{% cycle 'row' 'row-alt' %}"> 
 			    <span class="row-info"> 
 				    <img src="{{STATIC_URL}}img/icon-{{job.jobtype.slug}}.png" alt="Full Time" /> 
-                    <a href="{% url listings_ad_detail job.id job.joburl %}" title="{{ job }}">{{ job }}</a> 
+                    <a href="{% url listings_ad_detail job.id job.ad_url %}" title="{{ job }}">{{ job }}</a> 
                     <span class="la">at</span> {{ job.company }} 
                     <span class="la">in</span>
                         {% if job.city %} {{job.city}} {% else %} {{job.outside_location}} {% endif %}
