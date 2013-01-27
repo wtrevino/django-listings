@@ -120,6 +120,12 @@ class Posting(models.Model):
         self.status = POSTING_INACTIVE
         self.save()
 
+    def activate_with_feeds(self):
+        from listings.syndication.models import Feed
+        self.status = POSTING_ACTIVE
+        for feed in Feed.objects.filter(sites__in=self.sites.all()):
+            feed.ads.add(self)
+
     def email_published_before(self):
         return self.__class__.active.exclude(pk=self.id) \
                           .filter(poster_email=self.poster_email).count() > 0

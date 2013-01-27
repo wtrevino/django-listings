@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 from django.contrib.sites.models import Site
 from django.template.loader import get_template_from_string
 
+from listings.models import Job
+
 upload_to = lambda instance, filename: '/'.join(['feeds', instance.name.lower(), filename])
 
 
@@ -19,8 +21,9 @@ class Feed(models.Model):
     name = models.CharField(_('Name'), unique=True, max_length=100, blank=False)
     template = models.FileField(upload_to=upload_to, validators=[validate_file_extension, ])
     content_type = models.CharField(_('Content type'), max_length=100, blank=False, default='application/xml')
-    site = models.ManyToManyField(Site)
     feed_url = models.CharField(_('URL'), unique=True, max_length=100, blank=False)
+    sites = models.ManyToManyField(Site)
+    ads = models.ManyToManyField(Job)
 
     def __unicode__(self):
         return self.name

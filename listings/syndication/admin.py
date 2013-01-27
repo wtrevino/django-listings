@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.forms.widgets import ClearableFileInput
 from django import forms
 
-from listings.syndication.models import Feed, FeedType
+from listings.syndication.models import Feed
 
 
 class FeedTemplateInput(ClearableFileInput):
@@ -17,16 +17,11 @@ class FeedTemplateInput(ClearableFileInput):
         return super(FeedTemplateInput, self).render(name, value, attrs=attrs)
 
 
-class FeedTypeForm(forms.ModelForm):
+class FeedForm(forms.ModelForm):
     template = forms.FileField(widget=FeedTemplateInput())
 
 
-class FeedTypeAdmin(admin.ModelAdmin):
-    form = FeedTypeForm
-
-
 class FeedAdmin(admin.ModelAdmin):
-    pass
+    form = FeedForm
 
-admin.site.register(FeedType, FeedTypeAdmin)
 admin.site.register(Feed, FeedAdmin)
