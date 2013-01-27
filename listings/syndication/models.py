@@ -23,7 +23,7 @@ class Feed(models.Model):
     content_type = models.CharField(_('Content type'), max_length=100, blank=False, default='application/xml')
     feed_url = models.CharField(_('URL'), unique=True, max_length=100, blank=False)
     sites = models.ManyToManyField(Site)
-    ads = models.ManyToManyField(Job)
+    ads = models.ManyToManyField(Job, editable=False)
 
     def __unicode__(self):
         return self.name
