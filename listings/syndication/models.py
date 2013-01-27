@@ -26,7 +26,7 @@ class Feed(models.Model):
     ads = models.ManyToManyField(Job, editable=False)
 
     def __unicode__(self):
-        return self.name
+        return '%s - (%s)' % (self.name, ', '.join(site.name for site in self.sites.all()))
 
     def get_template(self):
         return get_template_from_string(self.template.read())
