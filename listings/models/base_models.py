@@ -122,7 +122,7 @@ class Posting(models.Model):
 
     def activate_with_feeds(self):
         from listings.syndication.models import Feed
-        self.status = POSTING_ACTIVE
+        self.activate()
         for feed in Feed.objects.filter(sites__in=self.sites.all()):
             feed.ads.add(self)
 

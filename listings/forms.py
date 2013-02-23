@@ -39,8 +39,8 @@ class JobForm(forms.ModelForm):
             'poster_email': forms.TextInput(attrs={'size': 40}),
         }
 
-    if settings.LISTINGS_GEO_LEVEL == GEO_LEVEL_COUNTRY:
-        region = forms.CharField()
+    #if settings.LISTINGS_GEO_LEVEL == GEO_LEVEL_COUNTRY:
+    #    region = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)

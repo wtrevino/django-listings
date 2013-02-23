@@ -11,6 +11,7 @@ def general_settings(request):
     tv['LISTINGS_HTML_TITLE'] = settings.LISTINGS_HTML_TITLE
     tv['LISTINGS_SITE_KEYWORDS'] = settings.LISTINGS_SITE_KEYWORDS
     tv['LISTINGS_SITE_DESCRIPTION'] = settings.LISTINGS_SITE_DESCRIPTION
+    tv['markup_lang'] = getattr(settings, 'LISTINGS_MARKUP_LANGUAGE', None)
     return tv
 
 

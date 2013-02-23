@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 from django.utils.encoding import smart_str, force_unicode
 from django.utils.translation import ugettext_lazy as _
+from django.utils.html import strip_tags
 from django import VERSION as django_version
 from django.contrib.sites.models import Site
 from django.contrib.sites.managers import CurrentSiteManager
@@ -143,6 +144,9 @@ class Job(Posting):
     def get_application_count(self):
         return JobStat.objects.filter(job=self, stat_type='A').count()
 
+    def get_description(self):
+        return self.description_html or self.description
+
     def increment_view_count(self, request):  # TODO: Move to Posting
         lh = last_hour()
         ip = getIP(request)
@@ -172,22 +176,32 @@ class Job(Posting):
                         '-' + listings_settings.LISTINGS_AT_URL + \
                         '-' + slugify(self.company)
 
-        #saving with textile
+        # when saving with textile
         if listings_settings.LISTINGS_MARKUP_LANGUAGE == 'textile':
             import textile
             self.description_html = mark_safe(
                                         force_unicode(
                                             textile.textile(
                                                 smart_str(self.description))))
-        #or markdown
+        # or markdown
         elif listings_settings.LISTINGS_MARKUP_LANGUAGE == 'markdown':
             import markdown
             self.description_html = mark_safe(
                                         force_unicode(
                                             markdown.markdown(
                                                 smart_str(self.description))))
+
+        # or wysiwyg
+        elif listings_settings.LISTINGS_MARKUP_LANGUAGE == 'html':
+            import django_wysiwyg
+            self.description_html = mark_safe(
+                                        force_unicode(
+                                            django_wysiwyg.clean_html(self.description)))
+
+        # or else, disallow all markup
         else:
-            self.description_html = self.description
+            self.description = strip_tags(self.description)
+            self.description_html = ''
 
         super(Job, self).save(*args, **kwargs)
         current_site = Site.objects.get(pk=django_settings.SITE_ID)

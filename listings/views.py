@@ -29,8 +29,7 @@ def job_detail(request, job_id, ad_url):
     try:
         job = Job.active.get(pk=job_id, ad_url=ad_url)
         extra_context = {'page_type': 'detail',
-               'cv_extensions': listings_settings.LISTINGS_CV_EXTENSIONS,
-               'markup_lang': listings_settings.LISTINGS_MARKUP_LANGUAGE}
+               'cv_extensions': listings_settings.LISTINGS_CV_EXTENSIONS}
 
         # Increment views
         job.increment_view_count(request)
@@ -101,8 +100,7 @@ def job_verify(request, job_id, auth):
     queryset = Job.objects.filter(auth=auth)
     # Setting page_type as 'verify' in order to
     # show edit and cancelation buttons in the template
-    extra_context = {'page_type': 'verify',
-               'markup_lang': listings_settings.LISTINGS_MARKUP_LANGUAGE}
+    extra_context = {'page_type': 'verify'}
     return object_detail(request, queryset=queryset,
                             object_id=job_id, extra_context=extra_context)
 
@@ -210,7 +208,7 @@ def job_edit(request, job_id, auth):
     ''' A view for editing published or unpublished job posts.
     '''
     job = get_object_or_404(Job, pk=job_id, auth=auth)
-    if job.status not in (Job.ACTIVE, Job.TEMPORARY):
+    if job.status not in (POSTING_ACTIVE, POSTING_TEMPORARY):
         raise Http404
     return update_object(request, form_class=JobForm, object_id=job_id,
            post_save_redirect='../../../' +

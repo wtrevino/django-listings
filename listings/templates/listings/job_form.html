@@ -1,7 +1,7 @@
 {% extends "listings/base.html" %}
+{% load wysiwyg %}
 
 {% block content %}
-
 <div id="job-listings"></div><!-- #job-listings -->
 			<div class="steps">
 				<div id="step-1" class="step-active">
@@ -64,7 +64,8 @@
                                <!-- <textarea  tabindex="4" name="description" id="description" cols="80" rows="15"></textarea> -->
                                 {{ form.description.errors }}
                                 {{ form.description }}
-																<div class="suggestion">
+
+								<div class="suggestion">
 									<a target="_blank" href="http://www.textism.com/tools/textile/" onclick="$('#textile-suggestions').toggle(); return false;">Format text with Textile</a></div>
 								<div id="textile-suggestions" style="display: none;">
 									<table>
@@ -166,7 +167,17 @@
 				<fieldset class="hidden">					
 					<input type="hidden" name="action" value="publish" /> 
 														</fieldset> 
-			</form> 
+			</form>
+{% endblock %}
 
-
+{% block extra_js %}
+    {% if markup_lang == 'html' %}
+        <!--script type="text/javascript">
+            (function(){
+        	    var config = null;
+        	    django_wysiwyg.enable('id_description_editor', 'id_description', config);
+            })();
+        </script-->
+        {% wysiwyg_editor 'id_description' %}
+    {% endif %}
 {% endblock %}
