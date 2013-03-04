@@ -46,7 +46,7 @@ class Posting(models.Model):
     owner = models.ForeignKey(User, blank=True, null=True)
     title = models.CharField(verbose_name=_('Title'), max_length=100, blank=False)
     description = models.TextField(_('Description'), blank=False)
-    description_html = models.TextField(editable=False)
+    description_text = models.TextField(editable=False)
 
     city = models.ForeignKey('cities_light.City', verbose_name=_('City'), null=True, blank=True)
     outside_location = models.CharField(_('Outside location'), max_length=150, blank=True)

@@ -5,7 +5,7 @@
         "fields": {
             "status": 2,
             "description": "Lorem ipsum.",
-            "description_html": "",
+            "description_text": "Lorem ipsum",
             "title": "Web developer",
             "url": "",
             "company": "Tyrell",

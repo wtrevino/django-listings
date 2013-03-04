@@ -108,17 +108,19 @@ class Job(Posting):
             '-' + listings_settings.LISTINGS_AT_URL + \
             '-' + slugify(self.company)
 
+        self.description_text = strip_tags(self.description)
+
         # when saving with textile
         if listings_settings.LISTINGS_MARKUP_LANGUAGE == 'textile':
             import textile
-            self.description_html = mark_safe(
+            self.description = mark_safe(
                 force_unicode(
                     textile.textile(
                         smart_str(self.description))))
         # or markdown
         elif listings_settings.LISTINGS_MARKUP_LANGUAGE == 'markdown':
             import markdown
-            self.description_html = mark_safe(
+            self.description = mark_safe(
                 force_unicode(
                     markdown.markdown(
                         smart_str(self.description))))
@@ -126,14 +128,13 @@ class Job(Posting):
         # or wysiwyg
         elif listings_settings.LISTINGS_MARKUP_LANGUAGE == 'html':
             import django_wysiwyg
-            self.description_html = mark_safe(
+            self.description = mark_safe(
                 force_unicode(
                     django_wysiwyg.clean_html(self.description)))
 
         # or else, disallow all markup
         else:
-            self.description = strip_tags(self.description)
-            self.description_html = ''
+            self.description = self.description_text
 
         super(Job, self).save(*args, **kwargs)
         current_site = Site.objects.get(pk=django_settings.SITE_ID)
