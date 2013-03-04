@@ -17,6 +17,7 @@ from listings.models.base_models import Posting
 from listings.conf import settings as listings_settings
 
 import datetime
+import random
 
 
 class Type(models.Model):
@@ -77,9 +78,6 @@ class Job(Posting):
     def get_application_count(self):
         return JobStat.objects.filter(job=self, stat_type='A').count()
 
-    def get_description(self):
-        return self.description_html or self.description
-
     def increment_view_count(self, request):  # TODO: Move to Posting
         lh = last_hour()
         ip = getIP(request)
@@ -104,9 +102,11 @@ class Job(Posting):
         self.company_slug = slugify(self.company)
 
         #saving job url
-        self.ad_url = slugify(self.title) + \
-            '-' + listings_settings.LISTINGS_AT_URL + \
-            '-' + slugify(self.company)
+        if not self.ad_url:
+            location = ''
+            if listings_settings.LISTINGS_LOCATION_IN_URL:
+                location = '-' + slugify(self.get_location())
+            self.ad_url = slugify(self.title) + location + '-' + ''.join(random.choice('gqwcz') for x in range(2))
 
         self.description_text = strip_tags(self.description)
 

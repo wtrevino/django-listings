@@ -49,6 +49,7 @@ LISTINGS_ACTIVATE_URL = geturl(url_set, 'LISTINGS_ACTIVATE_URL', 'activate')
 LISTINGS_DEACTIVATE_URL = geturl(url_set, 'LISTINGS_DEACTIVATE_URL', 'deactivate')
 LISTINGS_SEARCH_URL = geturl(url_set, 'LISTINGS_SEARCH_URL', 'search')
 LISTINGS_UNAVAILABLE_URL = geturl(url_set, 'LISTINGS_UNAVAILABLE_URL', 'job-unavailable')
+LISTINGS_LOCATION_IN_URL = getattr(settings, 'LISTINGS_LOCATION_IN_URL', True)
 
 # Mailing settings
 LISTINGS_ENABLE_NEW_POST_MODERATION = getattr(settings, 'LISTINGS_ENABLE_NEW_POST_MODERATION', True)
