@@ -72,12 +72,12 @@ LISTINGS_MAIL_PENDING_SUBJECT = getattr(settings,
 LISTINGS_MAIL_PUBLISH_SUBJECT = getattr(settings, 
                                     'LISTINGS_MAIL_PUBLISH_SUBJECT', 
                                     'Your ad on %(site_name)s was published')
- 
+
 LISTINGS_MAIL_APPLY_ONLINE_SUBJECT = getattr(settings, 
                                     'LISTINGS_MAIL_APPLY_ONLINE_SUBJECT', 
                                     '[ %(site_name)s ] I wish to apply for %(job_title)s')
 
 
 # Markup settings
-LISTINGS_MARKUP_LANGUAGE = getattr(settings, 'LISTINGS_MARKUP_LANGUAGE', None) #options: 'textile', 'markdown'
-
+LISTINGS_MARKUP_LANGUAGE = getattr(settings, 'LISTINGS_MARKUP_LANGUAGE', None)  # options: 'textile', 'markdown'
+LISTINGS_ALLOWED_TAGS = getattr(settings, 'LISTINGS_ALLOWED_TAGS', ['p', 'div', 'span', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'strong', 'em', 'b', 'i', ])
