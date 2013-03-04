@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
-from django.shortcuts import redirect
 from django.db.models import Q
 from datetime import datetime, timedelta
 
@@ -84,7 +82,7 @@ def getIP(request):
 
 
 #  adapted from http://ygamretuta.me/2012/06/27/django-strip-tags-php/
-def strip_tags(value):
+def strip_disallowed_tags(value):
     soup = bs(value)
 
     # remove comments
@@ -93,7 +91,7 @@ def strip_tags(value):
 
     # remove disallowed tags
     for tag in soup.find_all(True):
-        if tag.name not in settings.LISTINGS_ALLOWED_TAGS:
+        if tag.name not in listings_settings.LISTINGS_ALLOWED_TAGS:
             tag.unwrap()
 
     return soup.prettify()

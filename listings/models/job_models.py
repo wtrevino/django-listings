@@ -12,7 +12,7 @@ from django.contrib.sites.models import Site
 from django.contrib.sites.managers import CurrentSiteManager
 from django.conf import settings as django_settings
 
-from listings.helpers import last_hour, getIP
+from listings.helpers import last_hour, getIP, strip_disallowed_tags
 from listings.models.base_models import Posting
 from listings.conf import settings as listings_settings
 
@@ -135,6 +135,8 @@ class Job(Posting):
         # or else, disallow all markup
         else:
             self.description = self.description_text
+
+        self.description = strip_disallowed_tags(self.description)
 
         super(Job, self).save(*args, **kwargs)
         current_site = Site.objects.get(pk=django_settings.SITE_ID)

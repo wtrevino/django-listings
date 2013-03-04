@@ -37,7 +37,7 @@
                     </strong>
 			</p>
 			<div id="job-description">
-                {% firstof object.description|obfuscate|safe object.description_text|obfuscate|linebreaksbr %}
+                {% firstof object.description|safe|obfuscate_emails object.description_text|obfuscate_emails|linebreaksbr %}
 			</div>
 
 			<br />
