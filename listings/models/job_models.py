@@ -27,6 +27,7 @@ class Type(models.Model):
     '''
     name = models.CharField(_('Name'), unique=True, max_length=16, blank=False)
     slug = models.SlugField(_('Slug'), unique=True, max_length=32, blank=False)
+    label_name = models.CharField(_('Label name'), max_length=16, blank=True)
     sites = models.ManyToManyField(Site)
     objects = models.Manager()
     on_site = CurrentSiteManager()
