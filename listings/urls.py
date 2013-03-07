@@ -18,9 +18,10 @@ else:
 urlpatterns = patterns('django.views.generic',
 
                        url(r'^$', 'list_detail.object_list',  # Index view
-                       {'queryset': Job.active.all(),
-                       'extra_context': {'page_type': 'index'},
-                       'paginate_by': listings_settings.LISTINGS_JOBS_PER_PAGE},
+                       {'queryset': Job.active.order_by('-created_on').select_related(),
+                       'paginate_by': listings_settings.LISTINGS_JOBS_PER_PAGE,
+                       'template_name': 'listings/index.html',
+                       'template_object_name': 'ad'},
                        name='listings_job_list'),
 
                        url(r'^' + listings_settings.LISTINGS_CITIES_URL + '/$',  # Cities view
