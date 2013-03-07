@@ -26,13 +26,13 @@ POSTING_STATUS_CHOICES = (
 class TemporaryPostingsManager(CurrentSiteManager):
     def get_query_set(self):
         return super(TemporaryPostingsManager, self).get_query_set() \
-                        .filter(status=POSTING_TEMPORARY)
+            .filter(status=POSTING_TEMPORARY)
 
 
 class ActivePostingsManager(CurrentSiteManager):
     def get_query_set(self):
         return super(ActivePostingsManager, self).get_query_set() \
-                        .filter(status=POSTING_ACTIVE)
+            .filter(status=POSTING_ACTIVE)
 
 
 class Posting(models.Model):
@@ -51,8 +51,7 @@ class Posting(models.Model):
     city = models.ForeignKey('cities_light.City', verbose_name=_('City'), null=True, blank=True)
     outside_location = models.CharField(_('Outside location'), max_length=150, blank=True)
 
-    created_on = models.DateTimeField(_('Created on'), editable=False, \
-                                        default=datetime.now())
+    created_on = models.DateTimeField(_('Created on'), editable=False, default=datetime.now())
     status = models.IntegerField(choices=POSTING_STATUS_CHOICES, default=POSTING_TEMPORARY)
     views_count = models.IntegerField(editable=False, default=0)
     auth = models.CharField(blank=True, editable=False, max_length=32)
@@ -127,13 +126,12 @@ class Posting(models.Model):
             feed.ads.add(self)
 
     def email_published_before(self):
-        return self.__class__.active.exclude(pk=self.id) \
-                          .filter(poster_email=self.poster_email).count() > 0
+        return self.__class__.active.exclude(pk=self.id).filter(poster_email=self.poster_email).count() > 0
 
     def _set_auth_code(self, attr):
-        generated = md5(unicode(self.id) + \
-                            unicode(uuid.uuid1()) + \
-                            unicode(time.time())).hexdigest()
+        generated = md5(unicode(self.id) +
+                        unicode(uuid.uuid1()) +
+                        unicode(time.time())).hexdigest()
         setattr(self, attr, generated)
 
     def save(self, *args, **kwargs):
