@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import os
 import re
 from django.conf import settings
-from django.core.validators import email_re
 from django.core.exceptions import ImproperlyConfigured
 
 # General settings
 LISTINGS_SITE_NAME = getattr(settings, 'LISTINGS_SITE_NAME', 'Djobberbase')
+LISTINGS_SITE_SLUG = getattr(settings, 'LISTINGS_SITE_SLUG', 'djobberbase')
 LISTINGS_HTML_TITLE = getattr(settings, 'LISTINGS_HTML_TITLE', 'Djobberbase :: A jobberBase clone written using the Django framework')
 LISTINGS_SITE_KEYWORDS = getattr(settings, 'LISTINGS_SITE_KEYWORDS', ('job search', 'jobs', 'employment'))
 LISTINGS_SITE_DESCRIPTION = getattr(settings, 'LISTINGS_SITE_DESCRIPTION', 'Djobberbase jobs.')
@@ -21,8 +20,8 @@ LISTINGS_CAPTCHA_POST = getattr(settings, 'LISTINGS_CAPTCHA_POST', None)
 LISTINGS_CAPTCHA_APPLICATION = getattr(settings, 'LISTINGS_CAPTCHA_APPLICATION', None)
 LISTINGS_CV_EXTENSIONS = getattr(settings, 'LISTINGS_CV_EXTENSIONS', ('pdf', 'rtf', 'doc', 'docx', 'odt'))
 
-# Custom URLs settings
-def geturl(url_set, url, default):
+
+def geturl(url_set, url, default):  # Custom URLs settings
     ''' It checks if the url is valid and not already in use, in case
         it's an invalid url then the default url is returned.
     '''
@@ -58,25 +57,15 @@ LISTINGS_ADMIN_NOTIFICATIONS = getattr(settings, 'LISTINGS_ADMIN_NOTIFICATIONS',
 LISTINGS_POSTER_NOTIFICATIONS = getattr(settings, 'LISTINGS_POSTER_NOTIFICATIONS', False)
 LISTINGS_APPLICATION_NOTIFICATIONS = getattr(settings, 'LISTINGS_APPLICATION_NOTIFICATIONS', False)
 
-LISTINGS_NEW_POST_ADMIN_SUBJECT = getattr(settings, 
-                                    'LISTINGS_NEW_POST_ADMIN_SUBJECT', 
-                                    '[ %(site_name)s  ] New job: %(job_title)s')
+LISTINGS_NEW_POST_ADMIN_SUBJECT = getattr(settings, 'LISTINGS_NEW_POST_ADMIN_SUBJECT', '[ %(site_name)s  ] New job: %(job_title)s')
 
-LISTINGS_EDIT_POST_ADMIN_SUBJECT = getattr(settings, 
-                                    'LISTINGS_EDIT_POST_ADMIN_SUBJECT', 
-                                    '[ %(site_name)s  ] Edited job: %(job_title)s')
+LISTINGS_EDIT_POST_ADMIN_SUBJECT = getattr(settings, 'LISTINGS_EDIT_POST_ADMIN_SUBJECT', '[ %(site_name)s  ] Edited job: %(job_title)s')
 
-LISTINGS_MAIL_PENDING_SUBJECT = getattr(settings, 
-                                    'LISTINGS_MAIL_PENDING_SUBJECT', 
-                                    'Your ad on %(site_name)s')
+LISTINGS_MAIL_PENDING_SUBJECT = getattr(settings, 'LISTINGS_MAIL_PENDING_SUBJECT', 'Your ad on %(site_name)s')
 
-LISTINGS_MAIL_PUBLISH_SUBJECT = getattr(settings, 
-                                    'LISTINGS_MAIL_PUBLISH_SUBJECT', 
-                                    'Your ad on %(site_name)s was published')
+LISTINGS_MAIL_PUBLISH_SUBJECT = getattr(settings, 'LISTINGS_MAIL_PUBLISH_SUBJECT', 'Your ad on %(site_name)s was published')
 
-LISTINGS_MAIL_APPLY_ONLINE_SUBJECT = getattr(settings, 
-                                    'LISTINGS_MAIL_APPLY_ONLINE_SUBJECT', 
-                                    '[ %(site_name)s ] I wish to apply for %(job_title)s')
+LISTINGS_MAIL_APPLY_ONLINE_SUBJECT = getattr(settings, 'LISTINGS_MAIL_APPLY_ONLINE_SUBJECT', '[ %(site_name)s ] I wish to apply for %(job_title)s')
 
 
 # Markup settings
