@@ -8,6 +8,7 @@ from categories.models import Category
 def general_settings(request):
     tv = {}
     tv['LISTINGS_SITE_NAME'] = settings.LISTINGS_SITE_NAME
+    tv['LISTINGS_SITE_SLUG'] = settings.LISTINGS_SITE_SLUG
     tv['LISTINGS_HTML_TITLE'] = settings.LISTINGS_HTML_TITLE
     tv['LISTINGS_SITE_KEYWORDS'] = settings.LISTINGS_SITE_KEYWORDS
     tv['LISTINGS_SITE_DESCRIPTION'] = settings.LISTINGS_SITE_DESCRIPTION
