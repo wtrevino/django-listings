@@ -28,8 +28,7 @@ def job_detail(request, job_id, ad_url):
     '''
     try:
         job = Job.active.get(pk=job_id, ad_url=ad_url)
-        extra_context = {'page_type': 'detail',
-               'cv_extensions': listings_settings.LISTINGS_CV_EXTENSIONS}
+        extra_context = {'page_type': 'detail', 'cv_extensions': listings_settings.LISTINGS_CV_EXTENSIONS}
 
         # Increment views
         job.increment_view_count(request)
@@ -40,8 +39,7 @@ def job_detail(request, job_id, ad_url):
         # Only if the job has online applications ON and application
         # notifications are activated can the user apply online
         mb = minutes_between()
-        if job.apply_online and listings_settings.\
-            LISTINGS_APPLICATION_NOTIFICATIONS:
+        if job.apply_online and listings_settings.LISTINGS_APPLICATION_NOTIFICATIONS:
 
             # Add CSRF protection
             extra_context.update(csrf(request))
@@ -62,14 +60,10 @@ def job_detail(request, job_id, ad_url):
                     #Save JobStat application
                     ja = JobStat(job=job, ip=ip, stat_type='A')
                     ja.save()
-                    messages.add_message(request,
-                                messages.INFO,
-                                _('Your application was sent successfully.'))
+                    messages.add_message(request, messages.INFO, _('Your application was sent successfully.'))
                     extra_context['page_type'] = 'application'
                     queryset = Job.active.filter(ad_url=ad_url)
-                    return object_detail(request, queryset=queryset,
-                                        object_id=job_id,
-                                        extra_context=extra_context)
+                    return object_detail(request, queryset=queryset, object_id=job_id, extra_context=extra_context)
                 else:
                     extra_context['form_error'] = True
 
@@ -77,17 +71,13 @@ def job_detail(request, job_id, ad_url):
             else:
                 form = ApplicationForm(applicant_data={'ip': ip, 'mb': mb})
             extra_context['apform'] = form
-            extra_context['object'] = job
-            return render_to_response('listings/job_detail.html',
-                                       extra_context,
-                                       context_instance=RequestContext(request))
+            extra_context['ad'] = job
+            return render_to_response('listings/job_detail.html', extra_context, context_instance=RequestContext(request))
 
         # Only display the job, without an application form
         else:
             queryset = Job.active.filter(ad_url=ad_url)
-            return object_detail(request, queryset=queryset,
-                                object_id=job_id,
-                                extra_context=extra_context)
+            return object_detail(request, queryset=queryset, object_id=job_id, extra_context=extra_context, template_object_name='ad')
 
     # Instead of throwing a 404 error redirect to job unavailable page
     except Job.DoesNotExist:

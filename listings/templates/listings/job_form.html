@@ -172,6 +172,7 @@
 
 {% block extra_js %}
     {% if markup_lang == 'html' %}
+
         <!--script type="text/javascript">
             (function(){
         	    var config = null;
@@ -179,5 +180,12 @@
             })();
         </script-->
         {% wysiwyg_editor 'id_description' %}
+
+        CKEDITOR.editorConfig = function( config )
+        {
+           config.language = 'fr';
+           config.uiColor = '#000000';
+        };
+
     {% endif %}
 {% endblock %}

@@ -8,7 +8,6 @@ from listings import GEO_LEVEL_COUNTRY
 from django.utils.safestring import mark_safe
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
 
 from categories.models import Category
 
@@ -27,16 +26,16 @@ class HorizRadioRenderer(forms.RadioSelect.renderer):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('category', 'jobtype', 'title', 'description', 'company', \
-        'city', 'outside_location', 'url', 'poster_email', 'apply_online')
+        fields = ('category', 'jobtype', 'title', 'description', 'company', 'city', 'outside_location', 'url', 'poster_email', 'apply_online')
         widgets = {
             'jobtype': forms.RadioSelect(renderer=HorizRadioRenderer),
-            'title': forms.TextInput(attrs={'size': 50}),
-            'description': forms.Textarea(attrs={'rows': 15, 'cols': 80}),
-            'outside_location': forms.TextInput(attrs={'maxlength': 140, 'size': 50}),
-            'company': forms.TextInput(attrs={'size': 40}),
-            'url': forms.TextInput(attrs={'size': 35}),
-            'poster_email': forms.TextInput(attrs={'size': 40}),
+            'title': forms.TextInput(attrs={'class': 'span12'}),
+            'description': forms.Textarea(attrs={'class': 'span12'}),
+            'outside_location': forms.TextInput(attrs={'class': 'span12'}),
+            'company': forms.TextInput(attrs={'class': 'span12'}),
+            'url': forms.TextInput(attrs={'class': 'span12'}),
+            'poster_email': forms.TextInput(attrs={'class': 'span12'}),
+            'category': forms.Select(attrs={'class': 'span12'}),
         }
 
     #if settings.LISTINGS_GEO_LEVEL == GEO_LEVEL_COUNTRY:
@@ -47,7 +46,7 @@ class JobForm(forms.ModelForm):
         self.fields['jobtype'].empty_label = None
         self.fields['category'].empty_label = None
         city = self.fields['city']
-        choices = [(city.pk, unicode(city.name)) for city in city.queryset.all()]
+        choices = [(_city.pk, unicode(_city.name)) for _city in city.queryset.all()]
         self.fields['city'].choices = choices
 
         try:
