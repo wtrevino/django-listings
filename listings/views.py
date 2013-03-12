@@ -8,20 +8,28 @@ from django.views.generic.create_update import update_object
 
 #  Django 1.5 class base generic views
 from django.views.generic import ListView
+from django.views.generic.edit import FormView
 
 from django.core.context_processors import csrf
+from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.template import RequestContext
 from django.db.models import Count
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 
 from listings.models import Job, Type, JobStat, JobSearch
 from listings.models.base_models import POSTING_TEMPORARY, POSTING_ACTIVE
 from listings.postman import *
 from listings.helpers import *
-from listings.forms import ApplicationForm, JobForm
+from listings.forms import ApplicationForm
 from listings.conf import settings as listings_settings
+if listings_settings.LISTINGS_CAPTCHA_POST == 'simple':
+    from listings.forms import CaptchaJobForm
+    form_class = CaptchaJobForm
+else:
+    from listings.forms import JobForm
+    form_class = JobForm
 
 from categories.models import Category
 from cities_light.models import City
@@ -32,6 +40,15 @@ class IndexAdView(ListView):
     template_name = 'listings/index.html'
     context_object_name = 'ad_list'
     paginate_by = listings_settings.LISTINGS_JOBS_PER_PAGE
+
+
+class AdPostView(FormView):
+    template_name = 'listings/ad_form.html'
+    form_class = form_class
+
+    def form_valid(self, form):
+        ad = form.save()
+        return HttpResponseRedirect(reverse('listings_job_verify', kwargs={'job_id': ad.pk, 'auth': ad.auth}))
 
 
 def job_detail(request, job_id, ad_url):

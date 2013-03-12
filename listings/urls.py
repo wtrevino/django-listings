@@ -4,7 +4,7 @@ from django.conf.urls.defaults import *
 from listings.models import Job
 from listings.conf import settings as listings_settings
 from listings.feeds import LatestJobsFeed
-from listings.views import IndexAdView
+from listings.views import IndexAdView, AdPostView
 
 from cities_light.models import City
 
@@ -29,10 +29,7 @@ urlpatterns = patterns('django.views.generic',
                        name='listings_cities_list'),
 
                        url(r'^' + listings_settings.LISTINGS_POST_URL + '/$',  # Post new job
-                       'create_update.create_object',
-                       {'form_class': form_class,
-                       'post_save_redirect': '../' +
-                       listings_settings.LISTINGS_VERIFY_URL + '/%(id)d/%(auth)s/'},
+                       AdPostView.as_view(),
                        name='listings_job_post'),
 
                        url(r'^' + listings_settings.LISTINGS_UNAVAILABLE_URL + '/$',  # Job unavailable
