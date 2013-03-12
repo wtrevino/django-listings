@@ -59,7 +59,7 @@ class Job(Posting):
     #TODO: Esto podria ser un atributo mejor...
     company_slug = models.SlugField(max_length=150, blank=False, editable=False)
     #url of the company
-    url = models.URLField(verify_exists=False, max_length=150, blank=True)
+    url = models.URLField(max_length=150, blank=True)
 
     #url of the job post
     ad_url = models.CharField(blank=True, editable=False, max_length=32)
