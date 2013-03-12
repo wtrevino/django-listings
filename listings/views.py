@@ -91,8 +91,7 @@ def job_verify(request, job_id, auth):
     # Setting page_type as 'verify' in order to
     # show edit and cancelation buttons in the template
     extra_context = {'page_type': 'verify'}
-    return object_detail(request, queryset=queryset,
-                            object_id=job_id, extra_context=extra_context)
+    return object_detail(request, queryset=queryset, object_id=job_id, extra_context=extra_context, template_object_name='ad', template_name='listings/job_verify.html')
 
 
 def jobs_category(request, cslug=None, tslug=None):
@@ -189,9 +188,7 @@ def job_confirm(request, job_id, auth):
     if listings_settings.LISTINGS_ADMIN_NOTIFICATIONS:
         admin_email = MailPublishToAdmin(job, request)
         admin_email.start()
-    return object_detail(request, queryset=queryset,
-                         object_id=job_id,
-                         extra_context={'page_type': 'confirm'})
+    return object_detail(request, queryset=queryset, object_id=job_id, template_object_name='ad', template_name='listings/job_confirm.html')
 
 
 def job_edit(request, job_id, auth):
