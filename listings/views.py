@@ -9,6 +9,7 @@ from django.views.generic.create_update import update_object
 #  Django 1.5 class base generic views
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
+from django.views.generic.detail import DetailView
 
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
@@ -49,6 +50,26 @@ class AdPostView(FormView):
     def form_valid(self, form):
         ad = form.save()
         return HttpResponseRedirect(reverse('listings_job_verify', kwargs={'job_id': ad.pk, 'auth': ad.auth}))
+
+
+class AdDetailView(DetailView):
+    model = Job
+    context_object_name = 'ad'
+
+    def get_context_data(self, **kwargs):
+        ip = getIP(self.request)
+        mb = minutes_between()
+
+        context = super(AdDetailView, self).get_context_data(**kwargs)
+        context['application_form'] = ApplicationForm(applicant_data={'ip': ip, 'mb': mb})
+        return context
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Job, pk=self.kwargs.get('pk'), ad_url=self.kwargs.get('ad_url'))
+
+
+class ApplicationFormView(FormView):
+    form_class = ApplicationForm
 
 
 def job_detail(request, job_id, ad_url):
