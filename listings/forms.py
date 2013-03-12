@@ -62,9 +62,9 @@ class ApplicationForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.applicant_data = kwargs.pop('applicant_data')
         super(ApplicationForm, self).__init__(*args, **kwargs)
-    apply_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'id': 'apply_name', 'size': 30}))
-    apply_email = forms.EmailField(max_length=50, widget=forms.TextInput(attrs={'id': 'apply_email', 'size': 30}))
-    apply_msg = forms.CharField(widget=forms.Textarea(attrs={'rows': 15, 'cols': 60, 'id': 'apply_msg'}))
+    apply_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'id': 'apply_name', 'class': 'span5'}))
+    apply_email = forms.EmailField(max_length=50, widget=forms.TextInput(attrs={'id': 'apply_email', 'class': 'span5'}))
+    apply_msg = forms.CharField(widget=forms.Textarea(attrs={'id': 'apply_msg', 'class': 'span12'}))
     apply_cv = forms.FileField(required=False)
 
     if listings_settings.LISTINGS_CAPTCHA_APPLICATION == "simple":
