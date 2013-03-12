@@ -28,9 +28,10 @@ class JobForm(forms.ModelForm):
         model = Job
         fields = ('category', 'jobtype', 'title', 'description', 'company', 'city', 'outside_location', 'url', 'poster_email', 'apply_online')
         widgets = {
-            'jobtype': forms.RadioSelect(renderer=HorizRadioRenderer),
+            'jobtype': forms.Select(attrs={'class': 'span12'}),
             'title': forms.TextInput(attrs={'class': 'span12'}),
             'description': forms.Textarea(attrs={'class': 'span12'}),
+            'city': forms.Select(attrs={'class': 'span12'}),
             'outside_location': forms.TextInput(attrs={'class': 'span12'}),
             'company': forms.TextInput(attrs={'class': 'span12'}),
             'url': forms.TextInput(attrs={'class': 'span12'}),
@@ -43,20 +44,10 @@ class JobForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)
-        self.fields['jobtype'].empty_label = None
-        self.fields['category'].empty_label = None
         city = self.fields['city']
-        choices = [(_city.pk, unicode(_city.name)) for _city in city.queryset.all()]
+        choices = [('', '---------'), ]
+        choices.extend([(_city.pk, unicode(_city.name)) for _city in city.queryset.all()])
         self.fields['city'].choices = choices
-
-        try:
-            self.fields['category'].initial = Category.on_site.all()[0].id
-        except IndexError:
-            pass
-        try:
-            self.fields['jobtype'].initial = Type.on_site.all()[0].id
-        except IndexError:
-            pass
 
 
 class CaptchaJobForm(JobForm):
