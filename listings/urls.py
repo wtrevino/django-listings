@@ -4,6 +4,7 @@ from django.conf.urls.defaults import *
 from listings.models import Job
 from listings.conf import settings as listings_settings
 from listings.feeds import LatestJobsFeed
+from listings.views import IndexAdView
 
 from cities_light.models import City
 
@@ -17,11 +18,7 @@ else:
 
 urlpatterns = patterns('django.views.generic',
 
-                       url(r'^$', 'list_detail.object_list',  # Index view
-                       {'queryset': Job.active.order_by('-created_on').select_related(),
-                       'paginate_by': listings_settings.LISTINGS_JOBS_PER_PAGE,
-                       'template_name': 'listings/index.html',
-                       'template_object_name': 'ad'},
+                       url(r'^$', IndexAdView.as_view(),  # Index view
                        name='listings_job_list'),
 
                        url(r'^' + listings_settings.LISTINGS_CITIES_URL + '/$',  # Cities view

@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import get_object_or_404, redirect, render_to_response
+
+#  Deprecated generic views
 from django.views.generic.list_detail import object_detail, object_list
 from django.views.generic.create_update import update_object
+
+#  Django 1.5 class base generic views
+from django.views.generic import ListView
+
 from django.core.context_processors import csrf
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
@@ -19,6 +25,13 @@ from listings.conf import settings as listings_settings
 
 from categories.models import Category
 from cities_light.models import City
+
+
+class IndexAdView(ListView):
+    queryset = Job.active.order_by('-created_on').select_related()
+    template_name = 'listings/index.html'
+    context_object_name = 'ad_list'
+    paginate_by = listings_settings.LISTINGS_JOBS_PER_PAGE
 
 
 def job_detail(request, job_id, ad_url):
