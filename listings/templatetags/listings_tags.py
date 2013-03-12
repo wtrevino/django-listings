@@ -3,6 +3,7 @@
 from django import template
 from django.utils.safestring import mark_safe
 from django.db.models import Count
+from django.template.defaultfilters import stringfilter
 
 from listings.models import Job, Type, JobStat
 from categories.models import Category
@@ -104,3 +105,10 @@ register.tag('get_most_applied_jobs', do_most_applied_jobs)
 register.tag('get_categories', do_categories)
 register.tag('get_jobtypes', do_jobtypes)
 register.filter(nofollow)
+
+
+@register.filter
+@stringfilter
+def upto(value, delimiter=None):
+    return value.split(delimiter)[0]
+upto.is_safe = True
