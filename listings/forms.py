@@ -60,7 +60,7 @@ class CaptchaJobForm(JobForm):
 
 class ApplicationForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        self.applicant_data = kwargs.pop('applicant_data')
+        self.applicant_data = kwargs.pop('applicant_data', None)
         super(ApplicationForm, self).__init__(*args, **kwargs)
     apply_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'id': 'apply_name', 'class': 'span5'}))
     apply_email = forms.EmailField(max_length=50, widget=forms.TextInput(attrs={'id': 'apply_email', 'class': 'span5'}))

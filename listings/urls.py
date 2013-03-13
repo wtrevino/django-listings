@@ -4,7 +4,7 @@ from django.conf.urls.defaults import *
 from listings.models import Job
 from listings.conf import settings as listings_settings
 from listings.feeds import LatestJobsFeed
-from listings.views import IndexAdView, AdPostView, AdDetailView, ApplicationFormView
+from listings.views import IndexAdView, AdPostView, AdDetailView
 
 from cities_light.models import City
 
@@ -67,8 +67,8 @@ urlpatterns += patterns('',
                         name='listings_ad_detail'),
 
                         url(r'^' + listings_settings.LISTINGS_JOB_URL +  # Job apply
-                        '/(?P<pk>\d+)/(?P<ad_url>[-\w]+)/apply/$',
-                        ApplicationFormView.as_view(),
+                        '/(?P<job_id>\d+)/(?P<ad_url>[-\w]+)/apply/$',
+                        'listings.views.ad_apply',
                         name='listings_ad_apply'),
 
                         url(r'^' + listings_settings.LISTINGS_JOBS_IN_URL +  # Jobs in city view
