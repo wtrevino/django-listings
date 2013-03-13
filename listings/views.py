@@ -71,29 +71,32 @@ class AdDetailView(DetailView):
 class ApplicationFormView(FormView):
     form_class = ApplicationForm
 
+    def __init__(self, *args, **kwargs):
+        self.ad = kwargs.get('ad')
+        return super(ApplicationFormView, self).__init__(*args, **kwargs)
+
     def get_form(self, form_class):
-        ip = getIP(self.request)
-        mb = minutes_between()
+        self.ad = get_object_or_404(Job, pk=self.kwargs.get('pk'), ad_url=self.kwargs.get('ad_url'))
+        self.ip = getIP(self.request)
+        self.mb = minutes_between()
         return form_class(
             self.request.POST,
             self.request.FILES,
-            applicant_data={'ip': ip, 'mb': mb}
+            applicant_data={'ip': self.ip, 'mb': self.mb}
         )
 
     def form_invalid(self, form):
-        ad = get_object_or_404(Job, pk=self.kwargs.get('pk'), ad_url=self.kwargs.get('ad_url'))
-        return HttpResponseRedirect(reverse('listings_ad_detail', kwargs={'pk': ad.pk, 'ad_url': ad.ad_url}))
+        return HttpResponseRedirect(reverse('listings_ad_detail', kwargs={'pk': self.ad.pk, 'ad_url': self.ad.ad_url}))
 
     def form_valid(self, form):
-        ad = get_object_or_404(Job, pk=self.kwargs.get('pk'), ad_url=self.kwargs.get('ad_url'))
-        application_mail = MailApplyOnline(ad, self.request)
+        application_mail = MailApplyOnline(self.ad, self.request)
         application_mail.start()
 
         #Save JobStat application
-        ja = JobStat(job=ad, ip=getIP(self.request), stat_type='A')
+        ja = JobStat(job=self.ad, ip=getIP(self.request), stat_type='A')
         ja.save()
         messages.add_message(self.request, messages.INFO, _('Your application was sent successfully.'))
-        return HttpResponseRedirect(reverse('listings_ad_detail', kwargs={'pk': ad.pk, 'ad_url': ad.ad_url}))
+        return HttpResponseRedirect(reverse('listings_ad_detail', kwargs={'pk': self.ad.pk, 'ad_url': self.ad.ad_url}))
 
 
 def job_detail(request, job_id, ad_url):
