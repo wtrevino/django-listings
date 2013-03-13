@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 
 
-from listings.models import Job, Type, JobStat
+from listings.models import Job, JobStat
 from listings.conf import settings as listings_settings
-from listings import GEO_LEVEL_COUNTRY
 
 from django.utils.safestring import mark_safe
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-
-from categories.models import Category
+from django.utils import timezone
 
 from datetime import datetime, timedelta
 
@@ -77,6 +75,7 @@ class ApplicationForm(forms.Form):
         mb = self.applicant_data['mb']
         previous_applications = JobStat.objects.filter(created_on__range=mb, ip=ip, stat_type='A')
         m = previous_applications.count()
+        #from ipdb import set_trace;set_trace()
         if m > 0:
             #Getting how many minutes until user can apply again
             d1 = previous_applications.latest('created_on').created_on + timedelta(minutes=listings_settings.LISTINGS_MINUTES_BETWEEN)
